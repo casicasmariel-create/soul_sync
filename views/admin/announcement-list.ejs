@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Announcement List</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#12001f,#2c003e,#4b006e);
+color:white;
+min-height:100vh;
+padding:40px;
+}
+
+.top-bar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:40px;
+}
+
+.back-btn{
+background:#ffcc00;
+color:black;
+padding:12px 20px;
+border-radius:15px;
+text-decoration:none;
+font-weight:bold;
+transition:0.3s;
+}
+
+.back-btn:hover{
+background:white;
+transform:scale(1.03);
+}
+
+.create-btn{
+background:#00d4ff;
+color:black;
+padding:12px 20px;
+border-radius:15px;
+text-decoration:none;
+font-weight:bold;
+transition:0.3s;
+}
+
+.create-btn:hover{
+background:white;
+transform:scale(1.03);
+}
+
+.page-title{
+font-size:50px;
+font-weight:bold;
+}
+
+.announcement-wrapper{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit, minmax(350px, 420px));
+
+justify-content:center;
+
+gap:30px;
+
+}
+
+.announcement-card{
+
+width:100%;
+height:auto;
+
+background:rgba(255,255,255,0.1);
+
+padding:28px;
+
+border-radius:28px;
+
+backdrop-filter:blur(10px);
+
+box-shadow:0 8px 25px rgba(0,0,0,0.15);
+
+transition:0.3s;
+
+display:flex;
+flex-direction:column;
+justify-content:flex-start;
+}
+
+.announcement-card:hover{
+transform:translateY(-4px);
+}
+
+.announcement-title{
+color:#ffcc00;
+font-size:32px;
+margin-bottom:14px;
+line-height:1.2;
+font-weight:bold;
+}
+
+.announcement-content{
+white-space:pre-line;
+line-height:1.6;
+font-size:17px;
+margin-bottom:16px;
+color:#f1f1f1;
+}
+
+.announcement-date{
+font-size:14px;
+opacity:0.7;
+margin-bottom:18px;
+}
+
+.action-buttons{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-top:auto;
+}
+
+.edit-btn{
+background:#00d4ff;
+color:black;
+text-decoration:none;
+padding:10px 16px;
+border-radius:12px;
+font-weight:bold;
+transition:0.3s;
+}
+
+.edit-btn:hover{
+background:white;
+transform:scale(1.03);
+}
+
+.delete-btn{
+background:#ff3b3b;
+color:white;
+text-decoration:none;
+padding:10px 16px;
+border-radius:12px;
+font-weight:bold;
+transition:0.3s;
+}
+
+.delete-btn:hover{
+background:#ff6666;
+transform:scale(1.03);
+}
+
+@media(max-width:768px){
+
+.page-title{
+font-size:36px;
+}
+
+body{
+padding:20px;
+}
+
+.announcement-wrapper{
+grid-template-columns:1fr;
+}
+
+.announcement-title{
+font-size:28px;
+}
+
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="top-bar">
+
+<h1 class="page-title">
+📋 Announcement List
+</h1>
+
+<div style="display:flex; gap:10px; flex-wrap:wrap;">
+
+<a href="/admin/announcements" class="create-btn">
+➕ Create Announcement
+</a>
+
+<a href="/dashboard" class="back-btn">
+← Dashboard
+</a>
+
+</div>
+
+</div>
+
+<div class="announcement-wrapper">
+
+<% announcements.forEach(announcement => { %>
+
+<div class="announcement-card">
+
+<h2 class="announcement-title">
+<%= announcement.title %>
+</h2>
+
+<div class="announcement-content">
+<%= announcement.content %>
+</div>
+
+<div class="announcement-date">
+
+🕒
+
+<%= new Date(
+new Date(announcement.created_at).getTime()
++ (8 * 60 * 60 * 1000)
+).toLocaleString('en-PH', {
+
+year:'numeric',
+month:'long',
+day:'numeric',
+
+hour:'numeric',
+minute:'2-digit',
+
+hour12:true
+
+}) %>
+
+</div>
+
+<div class="action-buttons">
+
+<a
+href="/admin/edit-announcement/<%= announcement.id %>"
+class="edit-btn"
+>
+✏ Edit
+</a>
+
+<a
+href="/admin/delete-announcement/<%= announcement.id %>"
+class="delete-btn"
+onclick="return confirm('Delete this announcement?')"
+>
+🗑 Delete
+</a>
+
+</div>
+
+</div>
+
+<% }) %>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Youth Member Dashboard</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#12001f,#2c003e,#4b006e);
+color:white;
+min-height:100vh;
+overflow-x:hidden;
+}
+
+.sidebar{
+width:280px;
+height:100vh;
+position:fixed;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(12px);
+padding:30px 20px;
+overflow-y:auto;
+border-right:1px solid rgba(255,255,255,0.1);
+}
+
+.logo{
+width:95px;
+display:block;
+margin:auto;
+margin-bottom:12px;
+}
+
+.brand{
+text-align:center;
+font-size:30px;
+font-weight:bold;
+margin-bottom:35px;
+}
+
+.role{
+text-align:center;
+background:#00d4ff;
+color:black;
+padding:10px;
+border-radius:15px;
+font-weight:bold;
+margin-bottom:30px;
+}
+
+.menu a{
+display:block;
+padding:15px;
+margin-bottom:14px;
+border-radius:18px;
+text-decoration:none;
+color:white;
+background:rgba(255,255,255,0.08);
+transition:0.3s;
+font-size:15px;
+}
+
+.menu a:hover{
+background:#ffcc00;
+color:black;
+transform:translateX(5px);
+}
+
+.main{
+margin-left:300px;
+padding:40px;
+}
+
+.top-card{
+background:rgba(255,255,255,0.1);
+backdrop-filter:blur(12px);
+padding:35px;
+border-radius:30px;
+margin-bottom:30px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+gap:20px;
+margin-bottom:30px;
+}
+
+.card{
+background:rgba(255,255,255,0.1);
+padding:30px;
+border-radius:25px;
+}
+
+.value{
+font-size:40px;
+font-weight:bold;
+color:#00d4ff;
+}
+
+.section{
+background:rgba(255,255,255,0.1);
+padding:30px;
+border-radius:25px;
+margin-bottom:25px;
+}
+
+.section h3{
+margin-bottom:20px;
+}
+
+.activity{
+background:rgba(255,255,255,0.08);
+padding:18px;
+border-radius:18px;
+margin-bottom:15px;
+}
+
+.member-badge{
+background:#00d4ff;
+color:black;
+display:inline-block;
+padding:8px 15px;
+border-radius:12px;
+font-weight:bold;
+margin-top:10px;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="sidebar">
+
+<img src="/images/church-logo.png" class="logo">
+
+<div class="brand">
+SoulSync
+</div>
+
+<div class="role">
+Youth Member
+</div>
+
+<div class="menu">
+
+<a href="/dashboard">
+🏠 Dashboard
+</a>
+
+<a href="/user/announcements">
+📢 Church Announcements
+</a>
+
+<a href="/user/events">
+📅 Join Events
+</a>
+
+<a href="/user/prayer-requests">
+🙏 Submit Prayer Request
+</a>
+
+<a href="/user/music-classes">
+🎵 Music Class Schedule
+</a>
+
+<a href="#">
+📖 Bible Streak
+</a>
+
+<a href="#">
+🎤 Assigned Worship Songs
+</a>
+
+<a href="#">
+👤 My Profile
+</a>
+
+<a href="/logout">
+🚪 Logout
+</a>
+
+</div>
+
+</div>
+
+<div class="main">
+
+<div class="top-card">
+
+<h1>Youth Member Dashboard</h1>
+
+<h4>
+Welcome, <%= user.fullname %>
+</h4>
+
+<p>
+Participate and stay connected with the youth ministry community.
+</p>
+
+<div class="member-badge">
+MEMBER ACCESS
+</div>
+
+</div>
+
+<div class="grid">
+
+<div class="card">
+
+<h5>Bible Reading Streak</h5>
+
+<div class="value">
+15
+</div>
+
+</div>
+
+<div class="card">
+
+<h5>Upcoming Events</h5>
+
+<div class="value">
+6
+</div>
+
+</div>
+
+<div class="card">
+
+<h5>Prayer Supports</h5>
+
+<div class="value">
+20
+</div>
+
+</div>
+
+<div class="card">
+
+<h5>Music Sessions</h5>
+
+<div class="value">
+4
+</div>
+
+</div>
+
+</div>
+
+<div class="section">
+
+<h3>Member Activities</h3>
+
+<div class="activity">
+📢 View church announcements
+</div>
+
+<div class="activity">
+📅 Join youth fellowship events
+</div>
+
+<div class="activity">
+🙏 Submit prayer requests
+</div>
+
+<div class="activity">
+🎵 Attend music training schedules
+</div>
+
+<div class="activity">
+📖 Track Bible reading streak
+</div>
+
+<div class="activity">
+🎤 View assigned worship songs
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>

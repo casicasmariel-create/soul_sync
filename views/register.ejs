@@ -96,50 +96,6 @@
             color:white;
         }
 
-        .select-wrapper{
-            position:relative;
-            margin-bottom:18px;
-        }
-
-        .custom-select{
-            width:100%;
-            height:50px;
-            border:none;
-            border-radius:15px;
-            padding:0 15px;
-            background:rgba(255,255,255,0.15);
-            color:white;
-            outline:none;
-            appearance:none;
-            -webkit-appearance:none;
-            -moz-appearance:none;
-            backdrop-filter: blur(10px);
-            cursor:pointer;
-            transition:0.3s;
-        }
-
-        .custom-select:focus{
-            background:rgba(255,255,255,0.2);
-        }
-
-        .custom-select option{
-            background:#3d1457;
-            color:white;
-            border:none;
-            padding:10px;
-        }
-
-        .select-wrapper::after{
-            content:'▼';
-            position:absolute;
-            right:18px;
-            top:50%;
-            transform:translateY(-50%);
-            color:#ffcc00;
-            pointer-events:none;
-            font-size:12px;
-        }
-
         .register-btn{
             width:100%;
             height:50px;
@@ -182,7 +138,7 @@
         <div class="title">SoulSync</div>
 
         <div class="subtitle">
-            Create Your Account
+            Create Your Youth Member Account
         </div>
 
         <form action="/register" method="POST">
@@ -211,23 +167,11 @@
                 required
             >
 
-            <div class="select-wrapper">
-
-                <select name="role" class="custom-select" required>
-
-                    <option value="">Select Account Type</option>
-
-                    <option value="admin">
-                        Admin
-                    </option>
-
-                    <option value="user">
-                        User
-                    </option>
-
-                </select>
-
-            </div>
+            <input
+                type="hidden"
+                name="role"
+                value="youth_member"
+            >
 
             <button type="submit" class="register-btn">
                 Create Account
