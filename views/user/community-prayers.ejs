@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Community Prayers</title>
+
+<link
+href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+rel="stylesheet"
+>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+background:
+linear-gradient(
+135deg,
+#12001f,
+#2c003e,
+#4b006e
+);
+
+color:white;
+
+padding:28px;
+
+min-height:100vh;
+}
+
+/* ===================================== */
+/* TOP BAR */
+/* ===================================== */
+
+.top-bar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:28px;
+flex-wrap:wrap;
+gap:15px;
+}
+
+.page-title{
+font-size:34px;
+font-weight:700;
+}
+
+/* ===================================== */
+/* BUTTONS */
+/* ===================================== */
+
+.back-btn,
+.nav-btn{
+
+padding:10px 16px;
+
+border-radius:12px;
+
+text-decoration:none;
+
+font-weight:600;
+
+font-size:14px;
+
+transition:0.3s;
+
+border:none;
+
+cursor:pointer;
+
+display:inline-block;
+}
+
+.back-btn{
+background:#ffcc00;
+color:black;
+}
+
+.nav-btn{
+background:rgba(255,255,255,0.10);
+color:white;
+}
+
+.back-btn:hover,
+.nav-btn:hover{
+background:white;
+color:black;
+transform:translateY(-2px);
+}
+
+/* ===================================== */
+/* NAVIGATION */
+/* ===================================== */
+
+.prayer-nav{
+display:flex;
+gap:12px;
+flex-wrap:wrap;
+margin-bottom:24px;
+}
+
+/* ===================================== */
+/* GRID */
+/* ===================================== */
+
+.prayer-wrapper{
+
+display:grid;
+
+grid-template-columns:
+repeat(3, 1fr);
+
+gap:20px;
+
+align-items:start;
+
+}
+
+/* ===================================== */
+/* CARD */
+/* ===================================== */
+
+.prayer-card{
+
+background:
+rgba(255,255,255,0.10);
+
+padding:22px;
+
+border-radius:22px;
+
+backdrop-filter:blur(10px);
+
+box-shadow:
+0 6px 20px rgba(0,0,0,0.15);
+
+display:flex;
+flex-direction:column;
+
+transition:0.3s;
+}
+
+.prayer-card:hover{
+transform:translateY(-3px);
+}
+
+/* ===================================== */
+/* NAME */
+/* ===================================== */
+
+.prayer-name{
+font-size:22px;
+font-weight:700;
+color:#ffcc00;
+margin-bottom:12px;
+line-height:1.3;
+}
+
+/* ===================================== */
+/* BADGES */
+/* ===================================== */
+
+.category,
+.status{
+display:inline-block;
+padding:6px 12px;
+border-radius:10px;
+font-weight:600;
+font-size:13px;
+margin-bottom:14px;
+width:fit-content;
+}
+
+.category{
+background:#00d4ff;
+color:black;
+}
+
+.pending{
+background:#ffc107;
+color:black;
+}
+
+.answered{
+background:#198754;
+color:white;
+}
+
+/* ===================================== */
+/* CONTENT */
+/* ===================================== */
+
+.prayer-content{
+white-space:pre-line;
+line-height:1.6;
+font-size:15px;
+margin-bottom:16px;
+}
+
+/* ===================================== */
+/* BUTTON */
+/* ===================================== */
+
+.pray-btn{
+
+padding:10px 14px;
+
+border-radius:10px;
+
+text-decoration:none;
+
+font-weight:600;
+
+font-size:14px;
+
+border:none;
+
+margin-bottom:16px;
+}
+
+/* ===================================== */
+/* SUPPORT BOX */
+/* ===================================== */
+
+.support-box{
+
+background:
+rgba(255,255,255,0.08);
+
+padding:14px;
+
+border-radius:16px;
+
+margin-bottom:16px;
+
+line-height:1.6;
+
+font-size:14px;
+}
+
+.support-title{
+font-weight:700;
+color:#ffcc00;
+margin-bottom:8px;
+}
+
+/* ===================================== */
+/* TESTIMONY */
+/* ===================================== */
+
+.testimony-box{
+
+background:
+rgba(255,255,255,0.08);
+
+padding:14px;
+
+border-radius:16px;
+
+margin-bottom:16px;
+}
+
+/* ===================================== */
+/* DATE */
+/* ===================================== */
+
+.date{
+font-size:13px;
+opacity:0.75;
+margin-top:auto;
+}
+
+/* ===================================== */
+/* MOBILE */
+/* ===================================== */
+
+@media(max-width:992px){
+
+.prayer-wrapper{
+grid-template-columns:1fr;
+}
+
+.page-title{
+font-size:28px;
+}
+
+body{
+padding:18px;
+}
+
+}
+
+</style>
+
+</head>
+<body>
+
+<!-- ===================================== -->
+<!-- TOP BAR -->
+<!-- ===================================== -->
+
+<div class="top-bar">
+
+<h1 class="page-title">
+🤝 Community Prayers
+</h1>
+
+<a href="/dashboard" class="back-btn">
+← Dashboard
+</a>
+
+</div>
+
+<!-- ===================================== -->
+<!-- NAVIGATION -->
+<!-- ===================================== -->
+
+<div class="prayer-nav">
+
+<a
+href="/user/prayer-requests"
+class="nav-btn"
+>
+← Back to Prayer Requests
+</a>
+
+<a
+href="/user/my-prayers"
+class="nav-btn"
+>
+📋 My Prayers
+</a>
+
+</div>
+
+<!-- ===================================== -->
+<!-- PRAYERS -->
+<!-- ===================================== -->
+
+<div class="prayer-wrapper">
+
+<% prayers.forEach(prayer => { %>
+
+<div class="prayer-card">
+
+<!-- NAME -->
+
+<div class="prayer-name">
+
+<% if(prayer.anonymous === 'YES'){ %>
+
+🙏 Anonymous User
+
+<% } else { %>
+
+<%= prayer.fullname %>
+
+<% } %>
+
+</div>
+
+<!-- CATEGORY -->
+
+<div class="category">
+<%= prayer.category %>
+</div>
+
+<!-- STATUS -->
+
+<% if(prayer.status === 'Answered Prayer'){ %>
+
+<div class="status answered">
+✨ Answered Prayer
+</div>
+
+<% } else { %>
+
+<div class="status pending">
+⏳ Pending Prayer
+</div>
+
+<% } %>
+
+<!-- PRAYER -->
+
+<div class="prayer-content">
+<%= prayer.prayer %>
+</div>
+
+<!-- BUTTON LOGIC -->
+
+<%
+
+let alreadyPrayed = userSupports.some(
+support => support.prayer_id === prayer.id
+);
+
+%>
+
+<% if(
+prayer.anonymous !== 'YES'
+&& prayer.fullname === user.fullname
+){ %>
+
+<button
+class="btn btn-secondary btn-sm pray-btn"
+disabled
+>
+🙏 Your Prayer Request
+</button>
+
+<% } else if(alreadyPrayed){ %>
+
+<button
+class="btn btn-success btn-sm pray-btn"
+disabled
+>
+✅ Already Prayed
+</button>
+
+<% } else { %>
+
+<a
+href="/user/pray-for/<%= prayer.id %>"
+class="btn btn-info btn-sm pray-btn"
+>
+🙏 Pray For This
+</a>
+
+<% } %>
+
+<!-- SUPPORTERS -->
+
+<div class="support-box">
+
+<div class="support-title">
+🙏 Prayer Support
+</div>
+
+🙏
+<%= prayer.prayed_count || 0 %>
+
+People Prayed For This
+
+<br><br>
+
+<%
+
+let prayerSupporters = supports.filter(
+support => support.prayer_id === prayer.id
+);
+
+%>
+
+<% if(prayerSupporters.length > 0){ %>
+
+<% prayerSupporters.forEach(support => { %>
+
+• <%= support.fullname %>
+
+<br>
+
+<% }) %>
+
+<% } else { %>
+
+No supporters yet.
+
+<% } %>
+
+</div>
+
+<!-- TESTIMONY -->
+
+<% if(
+prayer.status === 'Answered Prayer'
+&& prayer.testimony
+){ %>
+
+<div class="testimony-box">
+
+<h5 style="color:#ffcc00; font-size:16px; margin-bottom:10px;">
+✨ Testimony
+</h5>
+
+<div style="line-height:1.6; font-size:14px;">
+<%= prayer.testimony %>
+</div>
+
+</div>
+
+<% } %>
+
+<!-- DATE -->
+
+<div class="date">
+
+🕒
+
+<%= new Date(
+new Date(prayer.created_at).getTime()
++ (8 * 60 * 60 * 1000)
+).toLocaleString('en-PH', {
+
+year:'numeric',
+month:'long',
+day:'numeric',
+
+hour:'numeric',
+minute:'2-digit',
+
+hour12:true
+
+}) %>
+
+</div>
+
+</div>
+
+<% }) %>
+
+</div>
+
+</body>
+</html>

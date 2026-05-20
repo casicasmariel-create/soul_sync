@@ -1,50 +1,83 @@
 const express = require('express');
+
 const router = express.Router();
 
-const authController = require('../controllers/authController');
+const authController =
+require('../controllers/authController');
+
+
 
 // =====================================
 // LOGIN
 // =====================================
 
-router.get('/', authController.loginPage);
+router.get(
+'/',
+authController.loginPage
+);
 
-router.get('/login', authController.loginPage);
+router.get(
+'/login',
+authController.loginPage
+);
 
-router.post('/login', authController.loginUser);
+router.post(
+'/login',
+authController.loginUser
+);
+
+
 
 // =====================================
 // REGISTER
 // =====================================
 
-router.get('/register', authController.registerPage);
+router.get(
+'/register',
+authController.registerPage
+);
 
-router.post('/register', authController.registerUser);
+router.post(
+'/register',
+authController.registerUser
+);
+
+
 
 // =====================================
 // DASHBOARD
 // =====================================
 
-router.get('/dashboard', authController.dashboard);
+router.get(
+'/dashboard',
+authController.dashboard
+);
+
+
 
 // =====================================
 // LOGOUT
 // =====================================
 
-router.get('/logout', authController.logoutUser);
+router.get(
+'/logout',
+authController.logoutUser
+);
+
+
 
 // =====================================
 // ANNOUNCEMENTS
 // =====================================
 
-// CREATE ANNOUNCEMENT PAGE
+// ADMIN CREATE PAGE
 
 router.get(
 '/admin/announcements',
 authController.adminAnnouncements
 );
 
-// ANNOUNCEMENT LIST PAGE
+// ANNOUNCEMENT LIST
 
 router.get(
 '/admin/announcements-list',
@@ -58,7 +91,7 @@ router.post(
 authController.createAnnouncement
 );
 
-// EDIT ANNOUNCEMENT PAGE
+// EDIT PAGE
 
 router.get(
 '/admin/edit-announcement/:id',
@@ -86,11 +119,13 @@ router.get(
 authController.userAnnouncements
 );
 
+
+
 // =====================================
 // EVENTS
 // =====================================
 
-// CREATE EVENT PAGE
+// ADMIN EVENTS PAGE
 
 router.get(
 '/admin/events',
@@ -104,7 +139,7 @@ router.get(
 authController.eventListPage
 );
 
-// EVENT RESPONSES PAGE
+// EVENT RESPONSES
 
 router.get(
 '/admin/event-responses/:id',
@@ -160,49 +195,87 @@ router.get(
 authController.notJoinEvent
 );
 
+
+
 // =====================================
 // PRAYER REQUESTS
 // =====================================
 
-// ADMIN PRAYER REQUESTS
+// ADMIN PAGE
 
 router.get(
 '/admin/prayer-requests',
 authController.adminPrayerRequests
 );
 
-// =====================================
-// PRAYER REQUEST LIST PAGE
-// =====================================
+// PRAYER LIST PAGE
 
 router.get(
 '/admin/prayer-request-list',
 authController.prayerRequestListPage
 );
 
-// =====================================
 // UPDATE PRAYER STATUS
-// =====================================
 
 router.get(
-'/admin/update-prayer-status/:id/:status',
-authController.updatePrayerStatus
+'/user/update-my-prayer-status/:id/:status',
+authController.updateMyPrayerStatus
 );
 
-// =====================================
-// DELETE PRAYER REQUEST
-// =====================================
+// SAVE TESTIMONY
+
+router.post(
+'/user/save-testimony/:id',
+authController.saveTestimony
+);
+
+// DELETE PRAYER
 
 router.get(
 '/admin/delete-prayer/:id',
 authController.deletePrayerRequest
 );
 
-// USER PRAYER REQUESTS
+// USER CREATE PAGE
 
 router.get(
 '/user/prayer-requests',
 authController.userPrayerRequests
+);
+
+// MY PRAYERS
+
+router.get(
+'/user/my-prayers',
+authController.userMyPrayers
+);
+
+// COMMUNITY PRAYERS
+
+router.get(
+'/user/community-prayers',
+authController.communityPrayers
+);
+
+// EDIT PRAYER PAGE
+
+router.get(
+'/user/edit-prayer/:id',
+authController.editPrayerPage
+);
+
+// UPDATE PRAYER
+
+router.post(
+'/user/update-prayer/:id',
+authController.updatePrayer
+);
+
+// DELETE USER PRAYER
+
+router.get(
+'/user/delete-prayer/:id',
+authController.deleteUserPrayer
 );
 
 // CREATE PRAYER REQUEST
@@ -212,63 +285,27 @@ router.post(
 authController.createPrayerRequest
 );
 
-// =====================================
-// PRAYER REQUESTS
-// =====================================
-
-// ADMIN PRAYER REQUESTS
+// PRAY FOR REQUEST
 
 router.get(
-'/admin/prayer-requests',
-authController.adminPrayerRequests
+'/user/pray-for/:id',
+authController.prayForRequest
 );
 
-// =====================================
-// PRAYER REQUEST LIST PAGE
-// =====================================
-
-router.get(
-'/admin/prayer-request-list',
-authController.prayerRequestListPage
-);
-
-// =====================================
-// UPDATE PRAYER STATUS
-// =====================================
-
-router.get(
-'/admin/update-prayer-status/:id/:status',
-authController.updatePrayerStatus
-);
-
-// =====================================
-// DELETE PRAYER REQUEST
-// =====================================
-
-router.get(
-'/admin/delete-prayer/:id',
-authController.deletePrayerRequest
-);
-
-// USER PRAYER REQUESTS
-
-router.get(
-'/user/prayer-requests',
-authController.userPrayerRequests
-);
-
-// CREATE PRAYER REQUEST
+// ADD TESTIMONY
 
 router.post(
-'/user/create-prayer-request',
-authController.createPrayerRequest
+'/user/add-testimony/:id',
+authController.addTestimony
 );
+
+
 
 // =====================================
 // MUSIC CLASSES
 // =====================================
 
-// ADMIN MUSIC CLASSES
+// ADMIN MUSIC PAGE
 
 router.get(
 '/admin/music-classes',
@@ -282,11 +319,66 @@ router.post(
 authController.createMusicClass
 );
 
-// USER MUSIC CLASSES
+// EDIT MUSIC CLASS PAGE
+
+router.get(
+'/admin/edit-music-class/:id',
+authController.editMusicClassPage
+);
+
+// UPDATE MUSIC CLASS
+
+router.post(
+'/admin/update-music-class/:id',
+authController.updateMusicClass
+);
+
+// DELETE MUSIC CLASS
+
+router.get(
+'/admin/delete-music-class/:id',
+authController.deleteMusicClass
+);
+
+// USER MUSIC PAGE
 
 router.get(
 '/user/music-classes',
 authController.userMusicClasses
 );
+
+// VIEW SINGLE MUSIC CLASS
+
+router.get(
+'/user/view-music-class/:id',
+authController.viewMusicClass
+);
+
+// JOIN MUSIC CLASS
+
+router.get(
+'/user/join-music-class/:id',
+authController.joinMusicClass
+);
+
+// MY MUSIC CLASSES
+
+router.get(
+'/user/my-music-classes',
+authController.myMusicClasses
+);
+
+// LEAVE MUSIC CLASS
+
+router.get(
+'/user/leave-music-class/:id',
+authController.leaveMusicClass
+);
+
+
+
+// =====================================
+// EXPORT ROUTER
+// =====================================
 
 module.exports = router;

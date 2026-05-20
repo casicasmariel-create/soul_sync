@@ -10,76 +10,190 @@
 
 <style>
 
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+}
+
 body{
-background:linear-gradient(135deg,#12001f,#2c003e,#4b006e);
+background:
+linear-gradient(
+135deg,
+#12001f,
+#2c003e,
+#4b006e
+);
+
 color:white;
 min-height:100vh;
-padding:40px;
-font-family:Arial;
+padding:28px;
 }
+
+/* ===================================== */
+/* TOP BAR */
+/* ===================================== */
 
 .top-bar{
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:35px;
+margin-bottom:28px;
+flex-wrap:wrap;
+gap:15px;
+}
+
+.page-title{
+font-size:34px;
+font-weight:700;
+}
+
+/* ===================================== */
+/* BUTTONS */
+/* ===================================== */
+
+.back-btn,
+.view-btn,
+.create-btn{
+
+padding:10px 16px;
+
+border-radius:12px;
+
+text-decoration:none;
+
+font-weight:600;
+
+font-size:14px;
+
+transition:0.3s;
+
+border:none;
 }
 
 .back-btn{
 background:#ffcc00;
 color:black;
-padding:12px 20px;
-border-radius:15px;
-text-decoration:none;
-font-weight:bold;
-}
-
-.main-box{
-background:rgba(255,255,255,0.1);
-padding:30px;
-border-radius:25px;
-backdrop-filter:blur(10px);
-max-width:700px;
-margin:auto;
-}
-
-input, textarea{
-width:100%;
-border:none;
-border-radius:15px;
-padding:15px;
-margin-bottom:18px;
-}
-
-textarea{
-height:180px;
-resize:none;
-}
-
-.button-group{
-display:flex;
-gap:12px;
-flex-wrap:wrap;
-}
-
-.create-btn{
-background:#ffcc00;
-color:black;
-border:none;
-padding:12px 22px;
-border-radius:14px;
-font-weight:bold;
 }
 
 .view-btn{
 background:#00d4ff;
 color:black;
-text-decoration:none;
-padding:12px 22px;
-border-radius:14px;
-font-weight:bold;
 display:flex;
 align-items:center;
+}
+
+.create-btn{
+background:#ffcc00;
+color:black;
+}
+
+.back-btn:hover,
+.view-btn:hover,
+.create-btn:hover{
+background:white;
+color:black;
+transform:translateY(-2px);
+}
+
+/* ===================================== */
+/* MAIN BOX */
+/* ===================================== */
+
+.main-box{
+
+background:
+rgba(255,255,255,0.10);
+
+padding:28px;
+
+border-radius:24px;
+
+backdrop-filter:blur(10px);
+
+max-width:720px;
+
+margin:auto;
+
+box-shadow:
+0 6px 20px rgba(0,0,0,0.15);
+}
+
+/* ===================================== */
+/* FORM */
+/* ===================================== */
+
+.form-title{
+font-size:26px;
+font-weight:700;
+margin-bottom:22px;
+color:#ffcc00;
+}
+
+label{
+font-size:14px;
+font-weight:600;
+margin-bottom:8px;
+display:block;
+}
+
+input,
+textarea{
+
+width:100%;
+
+border:none;
+
+border-radius:14px;
+
+padding:14px;
+
+margin-bottom:18px;
+
+outline:none;
+
+font-size:14px;
+}
+
+textarea{
+height:170px;
+resize:none;
+}
+
+/* ===================================== */
+/* BUTTON GROUP */
+/* ===================================== */
+
+.button-group{
+display:flex;
+gap:12px;
+flex-wrap:wrap;
+margin-top:8px;
+}
+
+/* ===================================== */
+/* MOBILE */
+/* ===================================== */
+
+@media(max-width:992px){
+
+body{
+padding:18px;
+}
+
+.page-title{
+font-size:28px;
+}
+
+.main-box{
+padding:22px;
+}
+
+.form-title{
+font-size:22px;
+}
+
 }
 
 </style>
@@ -87,9 +201,15 @@ align-items:center;
 </head>
 <body>
 
+<!-- ===================================== -->
+<!-- TOP BAR -->
+<!-- ===================================== -->
+
 <div class="top-bar">
 
-<h1>📅 Create Event</h1>
+<h1 class="page-title">
+📅 Create Event
+</h1>
 
 <a href="/dashboard" class="back-btn">
 ← Dashboard
@@ -97,29 +217,57 @@ align-items:center;
 
 </div>
 
+<!-- ===================================== -->
+<!-- MAIN FORM -->
+<!-- ===================================== -->
+
 <div class="main-box">
 
+<h2 class="form-title">
+Event Information
+</h2>
+
 <form action="/admin/create-event" method="POST">
+
+<!-- EVENT TITLE -->
+
+<label>
+Event Title
+</label>
 
 <input
 type="text"
 name="title"
-placeholder="Event Title"
+placeholder="Enter event title"
 required
 >
 
+<!-- EVENT DESCRIPTION -->
+
+<label>
+Event Description
+</label>
+
 <textarea
 name="description"
-placeholder="Event Description"
+placeholder="Enter complete event details..."
 required
 ></textarea>
+
+<!-- EVENT DATE -->
+
+<label>
+Event Date
+</label>
 
 <input
 type="text"
 name="event_date"
-placeholder="Event Date"
+placeholder="Example: May 25, 2026 - 7:00 PM"
 required
 >
+
+<!-- BUTTONS -->
 
 <div class="button-group">
 

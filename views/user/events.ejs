@@ -18,39 +18,47 @@ font-family:Arial, Helvetica, sans-serif;
 }
 
 body{
-background:linear-gradient(135deg,#12001f,#2c003e,#4b006e);
+background:
+linear-gradient(
+135deg,
+#12001f,
+#2c003e,
+#4b006e
+);
+
 color:white;
 min-height:100vh;
-padding:40px;
+padding:28px;
 }
 
 .top-bar{
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:35px;
+margin-bottom:28px;
 flex-wrap:wrap;
 gap:15px;
 }
 
 .page-title{
-font-size:50px;
-font-weight:bold;
+font-size:34px;
+font-weight:700;
 }
 
 .back-btn{
 background:#ffcc00;
 color:black;
-padding:12px 22px;
-border-radius:14px;
+padding:10px 16px;
+border-radius:12px;
 text-decoration:none;
-font-weight:bold;
+font-weight:600;
+font-size:14px;
 transition:0.3s;
 }
 
 .back-btn:hover{
 background:white;
-transform:scale(1.03);
+transform:translateY(-2px);
 }
 
 .table-box{
@@ -58,51 +66,54 @@ transform:scale(1.03);
 background:
 rgba(255,255,255,0.08);
 
-padding:30px;
+padding:24px;
 
-border-radius:30px;
+border-radius:24px;
 
 backdrop-filter:blur(10px);
 
 box-shadow:
-0 8px 25px rgba(0,0,0,0.15);
+0 6px 20px rgba(0,0,0,0.15);
+
+overflow-x:auto;
 }
 
 .table{
 margin-bottom:0;
-border-radius:18px;
+border-radius:14px;
 overflow:hidden;
 }
 
 .table th{
 background:#2c003e !important;
 color:#ffcc00 !important;
-padding:18px;
+padding:14px;
 text-align:center;
-font-size:18px;
+font-size:15px;
 }
 
 .table td{
-padding:18px;
+padding:14px;
 vertical-align:middle;
-font-size:16px;
+font-size:14px;
 }
 
 .event-title{
-font-size:22px;
-font-weight:bold;
+font-size:20px;
+font-weight:700;
 color:#ffcc00;
 margin-bottom:8px;
 }
 
 .event-description{
 white-space:pre-line;
-line-height:1.5;
-opacity:0.95;
+line-height:1.8;
+opacity:0.92;
+font-size:14px;
 }
 
 .event-date{
-font-size:15px;
+font-size:13px;
 opacity:0.8;
 margin-top:10px;
 }
@@ -110,13 +121,15 @@ margin-top:10px;
 .join-btn,
 .not-btn{
 
-padding:10px 14px;
+padding:9px 14px;
 
-border-radius:12px;
+border-radius:10px;
 
 text-decoration:none;
 
-font-weight:bold;
+font-weight:600;
+
+font-size:13px;
 
 display:inline-block;
 
@@ -132,6 +145,8 @@ color:black;
 
 .join-btn:hover{
 background:white;
+color:black;
+transform:translateY(-2px);
 }
 
 .not-btn{
@@ -141,12 +156,15 @@ color:white;
 
 .not-btn:hover{
 background:#ff6666;
+color:white;
+transform:translateY(-2px);
 }
 
 .status-box{
-padding:10px 14px;
-border-radius:12px;
-font-weight:bold;
+padding:9px 14px;
+border-radius:10px;
+font-weight:600;
+font-size:13px;
 display:inline-block;
 }
 
@@ -165,19 +183,19 @@ min-width:220px;
 text-align:center;
 }
 
-@media(max-width:768px){
+@media(max-width:992px){
 
 body{
-padding:20px;
+padding:18px;
 }
 
 .page-title{
-font-size:38px;
+font-size:28px;
 }
 
 .table th,
 .table td{
-font-size:14px;
+font-size:13px;
 padding:12px;
 }
 
@@ -199,7 +217,7 @@ font-size:18px;
 </h1>
 
 <a href="/dashboard" class="back-btn">
-← Back Dashboard
+← Dashboard
 </a>
 
 </div>
@@ -212,14 +230,16 @@ font-size:18px;
 
 <tr>
 
-<th style="width:50px;">#</th>
+<th style="width:50px;">
+#
+</th>
 
 <th>
 Event Details
 </th>
 
 <th style="width:240px;">
-Your Response
+Participation
 </th>
 
 </tr>
@@ -227,6 +247,8 @@ Your Response
 </thead>
 
 <tbody>
+
+<% if(events && events.length > 0){ %>
 
 <% events.forEach((event, index) => { %>
 
@@ -258,16 +280,23 @@ Your Response
 
 let userResponse = null;
 
+if(
+typeof responses !== 'undefined' &&
+typeof user !== 'undefined'
+){
+
 responses.forEach(response => {
 
 if(
-response.event_id === event.id &&
-response.user_id === user.id
+response.event_id == event.id &&
+response.user_id == user.id
 ){
 userResponse = response.response_status;
 }
 
 });
+
+}
 
 %>
 
@@ -298,7 +327,7 @@ class="not-btn"
 href="/user/join-event/<%= event.id %>"
 class="join-btn"
 >
-✅ Join
+🔄 Change Mind
 </a>
 
 <% } else { %>
@@ -307,7 +336,7 @@ class="join-btn"
 href="/user/join-event/<%= event.id %>"
 class="join-btn"
 >
-✅ Join
+✅ Join Event
 </a>
 
 <br>
@@ -316,7 +345,7 @@ class="join-btn"
 href="/user/not-join-event/<%= event.id %>"
 class="not-btn"
 >
-❌ Not Join
+❌ Not Joining
 </a>
 
 <% } %>
@@ -326,6 +355,20 @@ class="not-btn"
 </tr>
 
 <% }) %>
+
+<% } else { %>
+
+<tr>
+
+<td colspan="3" class="text-center">
+
+No events available.
+
+</td>
+
+</tr>
+
+<% } %>
 
 </tbody>
 

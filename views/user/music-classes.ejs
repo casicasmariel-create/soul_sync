@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+Music Classes
+</title>
+
+<link
+href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+rel="stylesheet"
+>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+
+background:
+linear-gradient(
+135deg,
+#12001f,
+#2c003e,
+#4b006e
+);
+
+min-height:100vh;
+
+padding:30px;
+
+color:white;
+
+}
+
+/* TOP BAR */
+
+.top-bar{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+flex-wrap:wrap;
+
+gap:15px;
+
+margin-bottom:30px;
+
+}
+
+.page-title{
+
+font-size:40px;
+font-weight:700;
+
+}
+
+.back-btn{
+
+background:#ffcc00;
+color:black;
+
+padding:12px 20px;
+
+border-radius:14px;
+
+text-decoration:none;
+
+font-weight:600;
+
+transition:0.3s;
+
+}
+
+.back-btn:hover{
+
+background:white;
+
+transform:translateY(-2px);
+
+}
+
+/* HEADER */
+
+.header-box{
+
+background:
+rgba(255,255,255,0.08);
+
+padding:28px;
+
+border-radius:28px;
+
+margin-bottom:30px;
+
+backdrop-filter:blur(10px);
+
+box-shadow:
+0 8px 20px rgba(0,0,0,0.15);
+
+}
+
+.header-title{
+
+font-size:32px;
+font-weight:700;
+
+margin-bottom:10px;
+
+color:#ffcc00;
+
+}
+
+.header-sub{
+
+line-height:1.8;
+
+opacity:0.9;
+
+}
+
+/* CLASS GRID */
+
+.class-grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit, minmax(340px,1fr));
+
+gap:25px;
+
+}
+
+/* CLASS CARD */
+
+.class-card{
+
+background:
+rgba(255,255,255,0.08);
+
+padding:25px;
+
+border-radius:28px;
+
+backdrop-filter:blur(10px);
+
+box-shadow:
+0 8px 20px rgba(0,0,0,0.15);
+
+transition:0.3s;
+
+display:flex;
+flex-direction:column;
+
+}
+
+.class-card:hover{
+
+transform:translateY(-4px);
+
+background:
+rgba(255,255,255,0.10);
+
+}
+
+.class-title{
+
+font-size:28px;
+font-weight:700;
+
+margin-bottom:14px;
+
+color:#ffcc00;
+
+line-height:1.4;
+
+}
+
+.category-badge{
+
+display:inline-block;
+
+background:#00d4ff;
+color:black;
+
+padding:8px 14px;
+
+border-radius:20px;
+
+font-size:13px;
+
+font-weight:700;
+
+margin-bottom:18px;
+
+}
+
+/* INFO */
+
+.info-box{
+
+background:
+rgba(255,255,255,0.05);
+
+padding:14px;
+
+border-radius:16px;
+
+margin-bottom:14px;
+
+}
+
+.info-title{
+
+font-size:13px;
+
+color:#bbb;
+
+margin-bottom:5px;
+
+}
+
+.info-value{
+
+font-size:15px;
+
+font-weight:600;
+
+line-height:1.6;
+
+}
+
+/* DESCRIPTION */
+
+.description-box{
+
+background:
+rgba(255,255,255,0.04);
+
+padding:16px;
+
+border-radius:16px;
+
+line-height:1.8;
+
+margin-top:10px;
+
+margin-bottom:20px;
+
+color:#f1f1f1;
+
+flex:1;
+
+}
+
+/* BUTTONS */
+
+.button-group{
+
+display:flex;
+
+gap:12px;
+
+flex-wrap:wrap;
+
+margin-top:auto;
+
+}
+
+.join-btn,
+.view-btn{
+
+padding:12px 18px;
+
+border-radius:14px;
+
+text-decoration:none;
+
+font-weight:700;
+
+font-size:14px;
+
+transition:0.3s;
+
+}
+
+.join-btn{
+
+background:#00d4ff;
+color:black;
+
+}
+
+.view-btn{
+
+background:#ffcc00;
+color:black;
+
+}
+
+.join-btn:hover,
+.view-btn:hover{
+
+background:white;
+
+transform:translateY(-2px);
+
+}
+
+/* EMPTY */
+
+.empty-box{
+
+text-align:center;
+
+padding:60px 20px;
+
+opacity:0.7;
+
+}
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+
+body{
+padding:18px;
+}
+
+.page-title{
+font-size:32px;
+}
+
+.header-title{
+font-size:26px;
+}
+
+.class-title{
+font-size:24px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- TOP BAR -->
+
+<div class="top-bar">
+
+<h1 class="page-title">
+🎵 Music Classes
+</h1>
+
+<a
+href="/dashboard"
+class="back-btn"
+>
+← Dashboard
+</a>
+
+</div>
+
+<!-- HEADER -->
+
+<div class="header-box">
+
+<div class="header-title">
+🎶 Worship & Ministry Training
+</div>
+
+<div class="header-sub">
+
+Grow your musical gifts and serve the ministry through worship training, instrument classes, and spiritual development.
+
+</div>
+
+</div>
+
+<!-- CLASS GRID -->
+
+<div class="class-grid">
+
+<% if(classes.length > 0){ %>
+
+<% classes.forEach(item => { %>
+
+<div class="class-card">
+
+<div class="class-title">
+
+<%= item.class_name %>
+
+</div>
+
+<div class="category-badge">
+
+<%= item.category %>
+
+</div>
+
+<!-- TRAINER -->
+
+<div class="info-box">
+
+<div class="info-title">
+👨‍🏫 Trainer
+</div>
+
+<div class="info-value">
+
+<%= item.trainer %>
+
+</div>
+
+</div>
+
+<!-- SCHEDULE -->
+
+<div class="info-box">
+
+<div class="info-title">
+📅 Schedule
+</div>
+
+<div class="info-value">
+
+<%= item.schedule %>
+
+</div>
+
+</div>
+
+<!-- LOCATION -->
+
+<div class="info-box">
+
+<div class="info-title">
+📍 Location
+</div>
+
+<div class="info-value">
+
+<%= item.location %>
+
+</div>
+
+</div>
+
+<!-- DESCRIPTION -->
+
+<div class="description-box">
+
+<%= item.description %>
+
+</div>
+
+<!-- BUTTONS -->
+
+<div class="button-group">
+
+<a
+href="/user/join-music-class/<%= item.id %>"
+class="join-btn"
+>
+🎵 Join Class
+</a>
+
+<a
+href="/user/view-music-class/<%= item.id %>"
+class="view-btn"
+>
+👀 View Details
+</a>
+
+</div>
+
+</div>
+
+<% }) %>
+
+<% } else { %>
+
+<div class="empty-box">
+
+<h3>
+🎵 No Music Classes Available Yet
+</h3>
+
+<p>
+Please wait for ministry training announcements.
+</p>
+
+</div>
+
+<% } %>
+
+</div>
+
+</body>
+</html>
