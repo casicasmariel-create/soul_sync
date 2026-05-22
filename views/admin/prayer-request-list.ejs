@@ -38,8 +38,10 @@ linear-gradient(
 );
 
 color:white;
+
 min-height:100vh;
-padding:30px;
+
+padding:24px;
 
 }
 
@@ -48,33 +50,44 @@ padding:30px;
 .top-bar{
 
 display:flex;
+
 justify-content:space-between;
+
 align-items:center;
+
 flex-wrap:wrap;
+
 gap:15px;
 
-margin-bottom:30px;
+margin-bottom:22px;
 
 }
 
 .page-title{
 
-font-size:38px;
+font-size:28px;
+
 font-weight:700;
 
 }
 
+/* DASHBOARD BUTTON */
+
 .back-btn{
 
 background:#ffcc00;
+
 color:black;
 
-padding:12px 18px;
+padding:10px 16px;
 
-border-radius:12px;
+border-radius:10px;
 
 text-decoration:none;
+
 font-weight:600;
+
+font-size:14px;
 
 transition:0.3s;
 
@@ -83,6 +96,7 @@ transition:0.3s;
 .back-btn:hover{
 
 background:white;
+
 transform:translateY(-2px);
 
 }
@@ -94,58 +108,93 @@ transform:translateY(-2px);
 display:grid;
 
 grid-template-columns:
-repeat(auto-fit, minmax(220px,1fr));
+repeat(auto-fit, minmax(180px,1fr));
 
-gap:18px;
+gap:14px;
 
-margin-bottom:28px;
+margin-bottom:22px;
 
 }
 
 .analytics-card{
 
-padding:24px;
+padding:14px 16px;
 
-border-radius:22px;
+border-radius:16px;
+
+min-height:95px;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
 
 text-align:center;
 
 font-weight:600;
 
 box-shadow:
-0 8px 20px rgba(0,0,0,0.15);
+0 3px 10px rgba(0,0,0,0.15);
 
 }
 
 .analytics-card h4{
 
-font-size:16px;
-margin-bottom:12px;
+font-size:15px;
+
+margin-bottom:6px;
+
+font-weight:600;
 
 }
 
 .analytics-card h1{
 
-font-size:42px;
-font-weight:bold;
+font-size:30px;
+
+font-weight:700;
+
+margin:0;
+
+line-height:1;
 
 }
 
+/* CARD COLORS */
+
 .total-card{
+
 background:#ffc107;
+
 color:black;
+
 }
 
 .praying-card{
+
 background:#0d6efd;
+
+color:white;
+
 }
 
 .answered-card{
+
 background:#198754;
+
+color:white;
+
 }
 
 .support-card{
+
 background:#dc3545;
+
+color:white;
+
 }
 
 /* FILTER */
@@ -153,59 +202,69 @@ background:#dc3545;
 .filter-box{
 
 display:flex;
-gap:14px;
+
+gap:12px;
+
 flex-wrap:wrap;
 
-margin-bottom:28px;
+margin-bottom:22px;
 
 }
 
 .filter-box input,
 .filter-box select{
 
-padding:12px 16px;
+padding:11px 14px;
 
 border:none;
+
 outline:none;
 
-border-radius:14px;
+border-radius:12px;
 
-font-size:15px;
+font-size:14px;
 
 }
 
 .search-input{
-width:320px;
+
+width:280px;
+
 }
 
-/* TABLE */
+/* TABLE CONTAINER */
 
 .table-container{
 
 background:
 rgba(255,255,255,0.08);
 
-padding:24px;
+padding:20px;
 
-border-radius:26px;
+border-radius:22px;
 
 backdrop-filter:blur(10px);
 
 overflow-x:auto;
 
 box-shadow:
-0 8px 25px rgba(0,0,0,0.15);
+0 6px 18px rgba(0,0,0,0.15);
 
 }
+
+/* TABLE */
 
 .table{
 
 margin-bottom:0;
 
-border-radius:16px;
+border-radius:14px;
+
 overflow:hidden;
 
 }
+
+/* TABLE HEADER */
 
 .table th{
 
@@ -213,11 +272,11 @@ background:#2c003e !important;
 
 color:#ffcc00 !important;
 
-padding:18px;
+padding:14px;
 
 text-align:center;
 
-font-size:17px;
+font-size:14px;
 
 font-weight:700;
 
@@ -225,20 +284,22 @@ white-space:nowrap;
 
 }
 
+/* TABLE BODY */
+
 .table td{
 
-padding:22px 18px;
+padding:16px 14px;
 
 vertical-align:top;
 
-font-size:15px;
+font-size:14px;
 
 background:
 rgba(18,18,18,0.82);
 
 color:#f1f1f1;
 
-line-height:1.7;
+line-height:1.5;
 
 }
 
@@ -247,15 +308,16 @@ line-height:1.7;
 .category-badge{
 
 background:#00d4ff;
+
 color:black;
 
-padding:8px 16px;
+padding:7px 14px;
 
-border-radius:12px;
+border-radius:10px;
 
 font-weight:700;
 
-font-size:14px;
+font-size:13px;
 
 display:inline-block;
 
@@ -265,11 +327,12 @@ display:inline-block;
 
 .status-badge{
 
-padding:8px 16px;
+padding:7px 14px;
 
-border-radius:12px;
+border-radius:10px;
 
-font-size:14px;
+font-size:13px;
+
 font-weight:700;
 
 display:inline-block;
@@ -277,13 +340,19 @@ display:inline-block;
 }
 
 .status-praying{
+
 background:#0dcaf0;
+
 color:black;
+
 }
 
 .status-answered{
+
 background:#198754;
+
 color:white;
+
 }
 
 /* DELETE BUTTON */
@@ -291,16 +360,19 @@ color:white;
 .delete-btn{
 
 background:#dc3545;
+
 border:none;
 
-padding:10px 16px;
+padding:9px 14px;
 
-border-radius:12px;
+border-radius:10px;
 
 font-weight:600;
-font-size:14px;
+
+font-size:13px;
 
 color:white;
+
 text-decoration:none;
 
 transition:0.3s;
@@ -312,37 +384,39 @@ display:inline-block;
 .delete-btn:hover{
 
 background:#ff5a6b;
+
 transform:translateY(-2px);
 
 }
 
-/* PRAYER CONTENT */
+/* PRAYER TITLE */
 
 .prayer-title{
 
-font-size:18px;
+font-size:16px;
+
 font-weight:700;
 
-line-height:1.7;
+line-height:1.5;
 
-margin-bottom:16px;
+margin-bottom:14px;
 
 color:#ffffff;
 
 }
 
-/* INFO BOX */
+/* INFO CARD */
 
 .info-card{
 
 background:
 rgba(255,255,255,0.06);
 
-padding:16px;
+padding:14px;
 
-border-radius:14px;
+border-radius:12px;
 
-margin-bottom:14px;
+margin-bottom:12px;
 
 border-left:4px solid #00d4ff;
 
@@ -350,11 +424,11 @@ border-left:4px solid #00d4ff;
 
 .info-title{
 
-font-size:15px;
+font-size:14px;
 
 font-weight:700;
 
-margin-bottom:10px;
+margin-bottom:8px;
 
 color:#00d4ff;
 
@@ -362,10 +436,11 @@ color:#00d4ff;
 
 .support-count{
 
-font-size:14px;
+font-size:13px;
+
 color:#f1f1f1;
 
-margin-bottom:10px;
+margin-bottom:8px;
 
 }
 
@@ -377,7 +452,7 @@ display:flex;
 
 flex-wrap:wrap;
 
-gap:8px;
+gap:7px;
 
 }
 
@@ -385,11 +460,11 @@ gap:8px;
 
 background:#37104d;
 
-padding:6px 12px;
+padding:5px 10px;
 
-border-radius:20px;
+border-radius:18px;
 
-font-size:13px;
+font-size:12px;
 
 color:white;
 
@@ -407,19 +482,19 @@ rgba(25,135,84,0.12);
 
 border-left:4px solid #198754;
 
-padding:16px;
+padding:14px;
 
-border-radius:14px;
+border-radius:12px;
 
 }
 
 .testimony-title{
 
-font-size:15px;
+font-size:14px;
 
 font-weight:700;
 
-margin-bottom:10px;
+margin-bottom:8px;
 
 color:#7dffb3;
 
@@ -427,9 +502,9 @@ color:#7dffb3;
 
 .testimony-text{
 
-font-size:14px;
+font-size:13px;
 
-line-height:1.8;
+line-height:1.6;
 
 font-style:italic;
 
@@ -442,11 +517,11 @@ color:#f1f1f1;
 @media(max-width:768px){
 
 body{
-padding:18px;
+padding:16px;
 }
 
 .page-title{
-font-size:30px;
+font-size:24px;
 }
 
 .search-input{
@@ -455,12 +530,17 @@ width:100%;
 
 .table th,
 .table td{
-font-size:13px;
-padding:14px;
+
+font-size:12px;
+
+padding:12px;
+
 }
 
 .analytics-card h1{
-font-size:34px;
+
+font-size:24px;
+
 }
 
 }
@@ -672,7 +752,7 @@ data-category="<%= prayer.category %>"
 
 </td>
 
-<!-- PRAYER REQUEST -->
+<!-- PRAYER -->
 
 <td>
 
@@ -719,7 +799,7 @@ prayer.supporters.length > 0
 
 <% } else { %>
 
-<div style="font-size:13px; color:#aaa;">
+<div style="font-size:12px; color:#aaa;">
 No supporters yet
 </div>
 

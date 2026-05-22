@@ -24,7 +24,7 @@ rel="stylesheet"
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial, Helvetica, sans-serif;
+font-family:'Segoe UI', sans-serif;
 }
 
 body{
@@ -32,16 +32,26 @@ body{
 background:
 linear-gradient(
 135deg,
-#12001f,
-#2c003e,
-#4b006e
+#14001f,
+#2a0038,
+#43005c
 );
 
 min-height:100vh;
 
-padding:30px;
+padding:22px;
 
 color:white;
+
+}
+
+/* MAIN */
+
+.main-container{
+
+max-width:1180px;
+
+margin:auto;
 
 }
 
@@ -57,31 +67,45 @@ align-items:center;
 
 flex-wrap:wrap;
 
-gap:15px;
+gap:10px;
 
-margin-bottom:30px;
+margin-bottom:20px;
 
 }
+
+/* TITLE */
 
 .page-title{
 
-font-size:40px;
+font-size:28px;
+
 font-weight:700;
 
+display:flex;
+
+align-items:center;
+
+gap:10px;
+
 }
+
+/* DASHBOARD BUTTON */
 
 .back-btn{
 
 background:#ffcc00;
+
 color:black;
 
-padding:12px 20px;
+padding:10px 16px;
 
-border-radius:14px;
+border-radius:10px;
 
 text-decoration:none;
 
-font-weight:600;
+font-size:13px;
+
+font-weight:700;
 
 transition:0.3s;
 
@@ -100,41 +124,50 @@ transform:translateY(-2px);
 .header-box{
 
 background:
-rgba(255,255,255,0.08);
+rgba(255,255,255,0.07);
 
-padding:28px;
+padding:24px;
 
-border-radius:28px;
+border-radius:22px;
 
-margin-bottom:30px;
+margin-bottom:24px;
 
 backdrop-filter:blur(10px);
 
-box-shadow:
-0 8px 20px rgba(0,0,0,0.15);
+border:
+1px solid rgba(255,255,255,0.05);
 
 }
 
+/* HEADER TITLE */
+
 .header-title{
 
-font-size:32px;
+font-size:24px;
+
 font-weight:700;
 
-margin-bottom:10px;
+margin-bottom:8px;
 
 color:#ffcc00;
 
 }
 
-.header-sub{
+/* HEADER TEXT */
+
+.header-text{
+
+font-size:14px;
 
 line-height:1.8;
 
 opacity:0.9;
 
+max-width:850px;
+
 }
 
-/* CLASS GRID */
+/* GRID */
 
 .class-grid{
 
@@ -143,139 +176,175 @@ display:grid;
 grid-template-columns:
 repeat(auto-fit, minmax(340px,1fr));
 
-gap:25px;
+gap:18px;
 
 }
 
-/* CLASS CARD */
+/* CARD */
 
 .class-card{
 
 background:
-rgba(255,255,255,0.08);
+rgba(255,255,255,0.07);
 
-padding:25px;
+padding:22px;
 
-border-radius:28px;
+border-radius:22px;
 
 backdrop-filter:blur(10px);
 
-box-shadow:
-0 8px 20px rgba(0,0,0,0.15);
+border:
+1px solid rgba(255,255,255,0.05);
 
 transition:0.3s;
 
 display:flex;
+
 flex-direction:column;
 
 }
 
 .class-card:hover{
 
-transform:translateY(-4px);
+transform:translateY(-3px);
 
 background:
-rgba(255,255,255,0.10);
+rgba(255,255,255,0.09);
 
 }
 
-.class-title{
+/* HEADER */
 
-font-size:28px;
-font-weight:700;
+.class-header{
 
-margin-bottom:14px;
+display:flex;
 
-color:#ffcc00;
+justify-content:space-between;
 
-line-height:1.4;
-
-}
-
-.category-badge{
-
-display:inline-block;
-
-background:#00d4ff;
-color:black;
-
-padding:8px 14px;
-
-border-radius:20px;
-
-font-size:13px;
-
-font-weight:700;
+align-items:flex-start;
 
 margin-bottom:18px;
 
 }
 
-/* INFO */
+/* TITLE */
 
-.info-box{
+.class-title{
 
-background:
-rgba(255,255,255,0.05);
+font-size:22px;
 
-padding:14px;
+font-weight:700;
 
-border-radius:16px;
+margin-bottom:12px;
 
-margin-bottom:14px;
+color:#ffcc00;
 
 }
 
-.info-title{
+/* CATEGORY */
 
-font-size:13px;
+.category-badge{
 
-color:#bbb;
+display:inline-block;
+
+background:#11cfff;
+
+color:black;
+
+padding:7px 14px;
+
+border-radius:20px;
+
+font-size:11px;
+
+font-weight:700;
+
+}
+
+/* DETAILS */
+
+.details-grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(3,1fr);
+
+gap:14px;
+
+margin-bottom:18px;
+
+}
+
+/* DETAIL ITEM */
+
+.detail-item{
+
+background:
+rgba(255,255,255,0.04);
+
+padding:14px;
+
+border-radius:14px;
+
+}
+
+/* LABEL */
+
+.detail-label{
+
+font-size:11px;
+
+color:#bbbbbb;
 
 margin-bottom:5px;
 
 }
 
-.info-value{
+/* VALUE */
 
-font-size:15px;
+.detail-value{
+
+font-size:14px;
 
 font-weight:600;
 
-line-height:1.6;
+line-height:1.5;
 
 }
 
 /* DESCRIPTION */
 
-.description-box{
+.class-description{
+
+font-size:13px;
+
+line-height:1.9;
+
+opacity:0.92;
+
+margin-bottom:20px;
+
+padding:15px;
 
 background:
 rgba(255,255,255,0.04);
 
-padding:16px;
-
-border-radius:16px;
-
-line-height:1.8;
-
-margin-top:10px;
-
-margin-bottom:20px;
-
-color:#f1f1f1;
-
-flex:1;
+border-radius:14px;
 
 }
 
-/* BUTTONS */
+/* FOOTER */
 
-.button-group{
+.class-footer{
 
 display:flex;
 
-gap:12px;
+justify-content:space-between;
+
+align-items:center;
+
+gap:15px;
 
 flex-wrap:wrap;
 
@@ -283,41 +352,103 @@ margin-top:auto;
 
 }
 
-.join-btn,
-.view-btn{
+/* STATUS */
 
-padding:12px 18px;
+.joined-status{
 
-border-radius:14px;
+color:#00ff99;
 
-text-decoration:none;
+font-size:13px;
 
 font-weight:700;
 
-font-size:14px;
+}
+
+.not-joined-status{
+
+color:#ffcc00;
+
+font-size:13px;
+
+font-weight:700;
+
+}
+
+/* BUTTON GROUP */
+
+.button-group{
+
+display:flex;
+
+gap:10px;
+
+flex-wrap:wrap;
+
+}
+
+/* BUTTONS */
+
+.present-btn,
+.join-btn,
+.leave-btn{
+
+padding:10px 16px;
+
+border:none;
+
+border-radius:12px;
+
+font-size:13px;
+
+font-weight:700;
+
+text-decoration:none;
+
+cursor:pointer;
 
 transition:0.3s;
 
 }
 
+/* PRESENT */
+
+.present-btn{
+
+background:#00d4ff;
+
+color:black;
+
+}
+
+/* JOIN */
+
 .join-btn{
 
 background:#00d4ff;
+
 color:black;
 
 }
 
-.view-btn{
+/* LEAVE */
 
-background:#ffcc00;
-color:black;
+.leave-btn{
+
+background:#ff4d6d;
+
+color:white;
 
 }
 
+/* HOVER */
+
+.present-btn:hover,
 .join-btn:hover,
-.view-btn:hover{
+.leave-btn:hover{
 
 background:white;
+
+color:black;
 
 transform:translateY(-2px);
 
@@ -327,11 +458,14 @@ transform:translateY(-2px);
 
 .empty-box{
 
+background:
+rgba(255,255,255,0.07);
+
+padding:50px 20px;
+
+border-radius:24px;
+
 text-align:center;
-
-padding:60px 20px;
-
-opacity:0.7;
 
 }
 
@@ -339,20 +473,42 @@ opacity:0.7;
 
 @media(max-width:768px){
 
-body{
-padding:18px;
-}
-
 .page-title{
-font-size:32px;
+
+font-size:24px;
+
 }
 
 .header-title{
-font-size:26px;
+
+font-size:20px;
+
 }
 
 .class-title{
-font-size:24px;
+
+font-size:20px;
+
+}
+
+.details-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.class-footer{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+}
+
+body{
+
+padding:16px;
+
 }
 
 }
@@ -362,6 +518,8 @@ font-size:24px;
 </head>
 
 <body>
+
+<div class="main-container">
 
 <!-- TOP BAR -->
 
@@ -388,7 +546,7 @@ class="back-btn"
 🎶 Worship & Ministry Training
 </div>
 
-<div class="header-sub">
+<div class="header-text">
 
 Grow your musical gifts and serve the ministry through worship training, instrument classes, and spiritual development.
 
@@ -406,11 +564,17 @@ Grow your musical gifts and serve the ministry through worship training, instrum
 
 <div class="class-card">
 
-<div class="class-title">
+<!-- HEADER -->
+
+<div class="class-header">
+
+<div>
+
+<h2 class="class-title">
 
 <%= item.class_name %>
 
-</div>
+</h2>
 
 <div class="category-badge">
 
@@ -418,15 +582,21 @@ Grow your musical gifts and serve the ministry through worship training, instrum
 
 </div>
 
-<!-- TRAINER -->
+</div>
 
-<div class="info-box">
+</div>
 
-<div class="info-title">
+<!-- DETAILS -->
+
+<div class="details-grid">
+
+<div class="detail-item">
+
+<div class="detail-label">
 👨‍🏫 Trainer
 </div>
 
-<div class="info-value">
+<div class="detail-value">
 
 <%= item.trainer %>
 
@@ -434,15 +604,13 @@ Grow your musical gifts and serve the ministry through worship training, instrum
 
 </div>
 
-<!-- SCHEDULE -->
+<div class="detail-item">
 
-<div class="info-box">
-
-<div class="info-title">
+<div class="detail-label">
 📅 Schedule
 </div>
 
-<div class="info-value">
+<div class="detail-value">
 
 <%= item.schedule %>
 
@@ -450,15 +618,13 @@ Grow your musical gifts and serve the ministry through worship training, instrum
 
 </div>
 
-<!-- LOCATION -->
+<div class="detail-item">
 
-<div class="info-box">
-
-<div class="info-title">
+<div class="detail-label">
 📍 Location
 </div>
 
-<div class="info-value">
+<div class="detail-value">
 
 <%= item.location %>
 
@@ -466,11 +632,41 @@ Grow your musical gifts and serve the ministry through worship training, instrum
 
 </div>
 
+</div>
+
 <!-- DESCRIPTION -->
 
-<div class="description-box">
+<div class="class-description">
 
 <%= item.description %>
+
+</div>
+
+<!-- FOOTER -->
+
+<div class="class-footer">
+
+<!-- STATUS -->
+
+<div>
+
+<% if(item.joined > 0){ %>
+
+<span class="joined-status">
+
+✅ Joined
+
+</span>
+
+<% } else { %>
+
+<span class="not-joined-status">
+
+⏳ Not Joined
+
+</span>
+
+<% } %>
 
 </div>
 
@@ -478,19 +674,53 @@ Grow your musical gifts and serve the ministry through worship training, instrum
 
 <div class="button-group">
 
+<% if(item.joined > 0){ %>
+
+<!-- PRESENT -->
+
+<form
+action="/user/record-attendance/<%= item.id %>"
+method="POST"
+>
+
+<button
+type="submit"
+class="present-btn"
+>
+
+✅ Present
+
+</button>
+
+</form>
+
+<!-- LEAVE -->
+
+<a
+href="/user/leave-music-class/<%= item.id %>"
+class="leave-btn"
+>
+
+🚪 Leave
+
+</a>
+
+<% } else { %>
+
+<!-- JOIN -->
+
 <a
 href="/user/join-music-class/<%= item.id %>"
 class="join-btn"
 >
+
 🎵 Join Class
+
 </a>
 
-<a
-href="/user/view-music-class/<%= item.id %>"
-class="view-btn"
->
-👀 View Details
-</a>
+<% } %>
+
+</div>
 
 </div>
 
@@ -503,7 +733,7 @@ class="view-btn"
 <div class="empty-box">
 
 <h3>
-🎵 No Music Classes Available Yet
+🎵 No Music Classes Yet
 </h3>
 
 <p>
@@ -513,6 +743,8 @@ Please wait for ministry training announcements.
 </div>
 
 <% } %>
+
+</div>
 
 </div>
 

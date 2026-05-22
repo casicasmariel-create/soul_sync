@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+Music Class Attendance
+</title>
+
+<link
+href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+rel="stylesheet"
+>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+
+background:
+linear-gradient(
+135deg,
+#12001f,
+#2c003e,
+#4b006e
+);
+
+min-height:100vh;
+
+padding:30px;
+
+color:white;
+
+}
+
+/* TOP */
+
+.top-bar{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+flex-wrap:wrap;
+
+gap:15px;
+
+margin-bottom:30px;
+
+}
+
+.page-title{
+
+font-size:38px;
+font-weight:700;
+
+}
+
+.back-btn{
+
+background:#ffcc00;
+color:black;
+
+padding:12px 20px;
+
+border-radius:14px;
+
+text-decoration:none;
+
+font-weight:700;
+
+transition:0.3s;
+
+}
+
+.back-btn:hover{
+
+background:white;
+
+transform:translateY(-2px);
+
+}
+
+/* HEADER */
+
+.header-box{
+
+background:
+rgba(255,255,255,0.08);
+
+padding:28px;
+
+border-radius:28px;
+
+margin-bottom:30px;
+
+backdrop-filter:blur(10px);
+
+box-shadow:
+0 8px 20px rgba(0,0,0,0.15);
+
+}
+
+.header-title{
+
+font-size:30px;
+font-weight:700;
+
+margin-bottom:10px;
+
+color:#ffcc00;
+
+}
+
+.header-sub{
+
+line-height:1.8;
+
+opacity:0.9;
+
+}
+
+/* SESSION STATUS */
+
+.session-status{
+
+margin-top:25px;
+
+display:inline-block;
+
+padding:14px 22px;
+
+border-radius:16px;
+
+font-weight:700;
+
+font-size:16px;
+
+}
+
+.session-open{
+
+background:#198754;
+color:white;
+
+}
+
+.session-closed{
+
+background:#dc3545;
+color:white;
+
+}
+
+/* TABLE */
+
+.table-wrapper{
+
+background:
+rgba(255,255,255,0.08);
+
+padding:25px;
+
+border-radius:28px;
+
+backdrop-filter:blur(10px);
+
+box-shadow:
+0 8px 20px rgba(0,0,0,0.15);
+
+overflow-x:auto;
+
+}
+
+table{
+
+width:100%;
+
+border-collapse:collapse;
+
+}
+
+th{
+
+background:
+rgba(255,255,255,0.12);
+
+padding:18px;
+
+font-size:14px;
+
+color:#ffcc00;
+
+text-align:left;
+
+}
+
+td{
+
+padding:18px;
+
+border-bottom:
+1px solid rgba(255,255,255,0.08);
+
+font-size:15px;
+
+}
+
+tr:hover{
+
+background:
+rgba(255,255,255,0.04);
+
+}
+
+/* STATUS BADGES */
+
+.status-badge{
+
+padding:10px 18px;
+
+border-radius:12px;
+
+font-weight:700;
+
+display:inline-block;
+
+font-size:14px;
+
+}
+
+.waiting{
+
+background:#00d4ff;
+color:black;
+
+}
+
+.present{
+
+background:#198754;
+color:white;
+
+}
+
+.late{
+
+background:#ffc107;
+color:black;
+
+}
+
+.absent{
+
+background:#dc3545;
+color:white;
+
+}
+
+/* EMPTY */
+
+.empty-box{
+
+text-align:center;
+
+padding:70px 20px;
+
+opacity:0.8;
+
+}
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+
+body{
+padding:18px;
+}
+
+.page-title{
+font-size:30px;
+}
+
+.header-title{
+font-size:24px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- TOP -->
+
+<div class="top-bar">
+
+<h1 class="page-title">
+🎵 Attendance Monitoring
+</h1>
+
+<a
+href="/admin/music-classes"
+class="back-btn"
+>
+← Back
+</a>
+
+</div>
+
+<!-- HEADER -->
+
+<div class="header-box">
+
+<div class="header-title">
+✅ Worship Training Attendance
+</div>
+
+<div class="header-sub">
+
+Attendance status is automatically recorded based on user check-in time.
+
+<br><br>
+
+🟢 Within 15 minutes = Present
+🟡 Beyond 15 minutes = Late
+🔴 No attendance before closing = Absent
+
+</div>
+
+<!-- SESSION STATUS -->
+
+<% if(musicClass.attendance_open === 'OPEN'){ %>
+
+<div class="session-status session-open">
+🟢 Attendance Session is OPEN
+</div>
+
+<% } else { %>
+
+<div class="session-status session-closed">
+🔴 Attendance Session is CLOSED
+</div>
+
+<% } %>
+
+</div>
+
+<!-- TABLE -->
+
+<div class="table-wrapper">
+
+<% if(members.length > 0){ %>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>
+#
+</th>
+
+<th>
+👤 Full Name
+</th>
+
+<th>
+📧 Email
+</th>
+
+<th>
+📌 Attendance Status
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<% members.forEach((member, index) => { %>
+
+<tr>
+
+<td>
+<%= index + 1 %>
+</td>
+
+<td>
+<%= member.fullname %>
+</td>
+
+<td>
+<%= member.email %>
+</td>
+
+<td>
+
+<%
+
+const status =
+member.attendance_status;
+
+const attendanceOpen =
+musicClass.attendance_open === 'OPEN';
+
+%>
+
+<!-- ===================================== -->
+<!-- WHEN ATTENDANCE IS OPEN -->
+<!-- ===================================== -->
+
+<% if(attendanceOpen){ %>
+
+    <!-- USER HAS NOT CLICKED PRESENT -->
+
+    <% if(!status){ %>
+
+        <span class="status-badge waiting">
+        🕒 Waiting Attendance
+        </span>
+
+    <!-- USER IS PRESENT -->
+
+    <% } else if(status === 'Present'){ %>
+
+        <span class="status-badge present">
+        ✅ Present
+        </span>
+
+    <!-- USER IS LATE -->
+
+    <% } else if(status === 'Late'){ %>
+
+        <span class="status-badge late">
+        ⏰ Late
+        </span>
+
+    <% } %>
+
+<!-- ===================================== -->
+<!-- WHEN ATTENDANCE IS CLOSED -->
+<!-- ===================================== -->
+
+<% } else { %>
+
+    <!-- PRESENT -->
+
+    <% if(status === 'Present'){ %>
+
+        <span class="status-badge present">
+        ✅ Present
+        </span>
+
+    <!-- LATE -->
+
+    <% } else if(status === 'Late'){ %>
+
+        <span class="status-badge late">
+        ⏰ Late
+        </span>
+
+    <!-- ABSENT -->
+
+    <% } else { %>
+
+        <span class="status-badge absent">
+        ❌ Absent
+        </span>
+
+    <% } %>
+
+<% } %>
+
+</td>
+
+</tr>
+
+<% }) %>
+
+</tbody>
+
+</table>
+
+<% } else { %>
+
+<div class="empty-box">
+
+<h2>
+🎵 No Members Yet
+</h2>
+
+<p style="margin-top:10px;">
+
+No trainees have joined this class yet.
+
+</p>
+
+</div>
+
+<% } %>
+
+</div>
+
+</body>
+</html>

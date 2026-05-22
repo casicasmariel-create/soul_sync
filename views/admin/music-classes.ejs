@@ -39,9 +39,19 @@ linear-gradient(
 
 min-height:100vh;
 
-padding:30px;
+padding:20px;
 
 color:white;
+
+}
+
+/* MAIN */
+
+.main-container{
+
+max-width:1250px;
+
+margin:auto;
 
 }
 
@@ -57,29 +67,43 @@ align-items:center;
 
 flex-wrap:wrap;
 
-gap:15px;
+gap:12px;
 
-margin-bottom:30px;
+margin-bottom:20px;
 
 }
+
+/* TITLE */
 
 .page-title{
 
-font-size:42px;
+font-size:30px;
+
 font-weight:700;
 
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
 }
+
+/* BUTTON */
 
 .back-btn{
 
 background:#ffcc00;
+
 color:black;
 
-padding:12px 20px;
+padding:9px 15px;
 
-border-radius:14px;
+border-radius:10px;
 
 text-decoration:none;
+
+font-size:14px;
 
 font-weight:700;
 
@@ -102,42 +126,58 @@ transform:translateY(-2px);
 display:grid;
 
 grid-template-columns:
-repeat(auto-fit, minmax(220px,1fr));
+repeat(auto-fit, minmax(180px,1fr));
 
-gap:20px;
+gap:12px;
 
-margin-bottom:30px;
+margin-bottom:20px;
 
 }
 
+/* ANALYTICS CARD */
+
 .analytics-card{
 
-padding:25px;
+padding:12px;
 
-border-radius:24px;
+border-radius:18px;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
 
 text-align:center;
 
+min-height:90px;
+
 box-shadow:
-0 8px 20px rgba(0,0,0,0.15);
+0 4px 10px rgba(0,0,0,0.15);
 
 }
 
 .analytics-card h4{
 
-font-size:16px;
+font-size:14px;
 
-margin-bottom:10px;
+margin-bottom:5px;
 
 }
 
 .analytics-card h1{
 
-font-size:42px;
+font-size:28px;
 
 font-weight:700;
 
+margin:0;
+
 }
+
+/* COLORS */
 
 .total-card{
 background:#ffc107;
@@ -145,7 +185,7 @@ color:black;
 }
 
 .trainer-card{
-background:#00d4ff;
+background:#00cfff;
 color:black;
 }
 
@@ -157,102 +197,106 @@ background:#198754;
 background:#dc3545;
 }
 
-/* MAIN GRID */
+/* GRID */
 
 .main-grid{
 
 display:grid;
 
 grid-template-columns:
-400px 1fr;
+320px 1fr;
 
-gap:25px;
+gap:18px;
 
 align-items:start;
 
 }
 
-/* FORM BOX */
+/* FORM */
 
 .form-box{
 
 background:
 rgba(255,255,255,0.08);
 
-padding:30px;
+padding:20px;
 
-border-radius:28px;
+border-radius:22px;
 
 backdrop-filter:blur(10px);
 
-box-shadow:
-0 8px 20px rgba(0,0,0,0.15);
-
-position:sticky;
-top:20px;
-
 }
 
-/* SECTION TITLE */
+/* TITLE */
 
 .section-title{
 
-font-size:26px;
+font-size:22px;
 
 font-weight:700;
 
-margin-bottom:24px;
+margin-bottom:18px;
 
 color:#ffcc00;
 
 }
 
-/* FORM */
+/* FORM LABEL */
 
 .form-label{
 
+font-size:14px;
+
 font-weight:600;
 
-margin-bottom:8px;
+margin-bottom:6px;
 
 }
+
+/* INPUT */
 
 .form-control,
 .form-select{
 
-padding:14px;
+padding:12px;
 
 border:none;
 
-border-radius:14px;
+border-radius:12px;
 
-margin-bottom:18px;
+margin-bottom:14px;
+
+font-size:14px;
 
 }
+
+/* TEXTAREA */
 
 textarea{
 
 resize:none;
-height:150px;
+
+height:120px;
 
 }
 
-/* BUTTON */
+/* CREATE BUTTON */
 
 .create-btn{
 
 width:100%;
 
-background:#00d4ff;
+background:#00cfff;
+
 color:black;
 
 border:none;
 
-padding:14px;
+padding:12px;
 
-border-radius:14px;
+border-radius:12px;
 
-font-size:16px;
+font-size:14px;
 
 font-weight:700;
 
@@ -268,21 +312,18 @@ transform:translateY(-2px);
 
 }
 
-/* CLASS LIST */
+/* CLASS BOX */
 
 .classes-box{
 
 background:
 rgba(255,255,255,0.08);
 
-padding:30px;
+padding:20px;
 
-border-radius:28px;
+border-radius:22px;
 
 backdrop-filter:blur(10px);
-
-box-shadow:
-0 8px 20px rgba(0,0,0,0.15);
 
 }
 
@@ -293,25 +334,14 @@ box-shadow:
 background:
 rgba(255,255,255,0.05);
 
-padding:24px;
+padding:18px;
 
-border-radius:24px;
+border-radius:20px;
 
-margin-bottom:24px;
+margin-bottom:18px;
 
 border:
 1px solid rgba(255,255,255,0.08);
-
-transition:0.3s;
-
-}
-
-.class-card:hover{
-
-transform:translateY(-3px);
-
-background:
-rgba(255,255,255,0.08);
 
 }
 
@@ -327,21 +357,21 @@ align-items:center;
 
 flex-wrap:wrap;
 
-gap:15px;
+gap:10px;
 
-margin-bottom:18px;
+margin-bottom:15px;
 
 }
 
+/* CLASS NAME */
+
 .class-title{
 
-font-size:28px;
+font-size:22px;
 
 font-weight:700;
 
 color:#ffcc00;
-
-line-height:1.5;
 
 }
 
@@ -349,14 +379,15 @@ line-height:1.5;
 
 .category-badge{
 
-background:#00d4ff;
+background:#00cfff;
+
 color:black;
 
-padding:8px 14px;
+padding:7px 14px;
 
 border-radius:20px;
 
-font-size:13px;
+font-size:12px;
 
 font-weight:700;
 
@@ -369,11 +400,11 @@ font-weight:700;
 display:grid;
 
 grid-template-columns:
-repeat(auto-fit, minmax(220px,1fr));
+repeat(auto-fit, minmax(200px,1fr));
 
-gap:15px;
+gap:12px;
 
-margin-bottom:18px;
+margin-bottom:14px;
 
 }
 
@@ -384,29 +415,27 @@ margin-bottom:18px;
 background:
 rgba(255,255,255,0.05);
 
-padding:15px;
+padding:13px;
 
-border-radius:16px;
+border-radius:14px;
 
 }
 
 .info-title{
 
-font-size:13px;
+font-size:12px;
 
-color:#bbb;
+color:#ccc;
 
-margin-bottom:5px;
+margin-bottom:4px;
 
 }
 
 .info-value{
 
-font-size:15px;
+font-size:14px;
 
 font-weight:600;
-
-line-height:1.6;
 
 }
 
@@ -417,65 +446,153 @@ line-height:1.6;
 background:
 rgba(255,255,255,0.04);
 
-padding:16px;
-
-border-radius:16px;
-
-line-height:1.8;
-
-margin-bottom:20px;
-
-color:#f1f1f1;
-
-}
-
-/* BUTTONS */
-
-.action-buttons{
-
-display:flex;
-
-gap:12px;
-
-flex-wrap:wrap;
-
-}
-
-.edit-btn,
-.delete-btn{
-
-padding:11px 18px;
+padding:14px;
 
 border-radius:14px;
 
+font-size:14px;
+
+line-height:1.6;
+
+margin-bottom:14px;
+
+}
+
+/* TOP BUTTONS */
+
+.top-actions{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+flex-wrap:wrap;
+
+gap:10px;
+
+margin-bottom:12px;
+
+}
+
+/* ANALYTICS BUTTON */
+
+.analytics-btn{
+
+background:#ff9800;
+
+color:black;
+
+padding:9px 14px;
+
+border-radius:10px;
+
 text-decoration:none;
 
-font-weight:700;
+font-size:13px;
 
-font-size:14px;
+font-weight:700;
 
 transition:0.3s;
 
 }
 
+.analytics-btn:hover{
+
+background:white;
+
+transform:translateY(-2px);
+
+}
+
+/* ACTION BUTTONS */
+
+.action-buttons{
+
+display:flex;
+
+gap:8px;
+
+flex-wrap:wrap;
+
+align-items:center;
+
+}
+
+/* BUTTONS */
+
+.edit-btn,
+.delete-btn,
+.members-btn,
+.attendance-btn,
+.qr-btn,
+.open-attendance-btn{
+
+padding:9px 14px;
+
+border-radius:10px;
+
+text-decoration:none;
+
+font-size:13px;
+
+font-weight:700;
+
+transition:0.3s;
+
+border:none;
+
+cursor:pointer;
+
+}
+
+/* COLORS */
+
 .edit-btn{
+background:#00cfff;
+color:black;
+}
+
+.delete-btn{
+background:#dc3545;
+color:white;
+}
+
+.members-btn{
+background:#6f42c1;
+color:white;
+}
+
+.attendance-btn{
+background:#198754;
+color:white;
+}
+
+.qr-btn{
+background:#ffcc00;
+color:black;
+}
+
+.open-attendance-btn{
 
 background:#00d4ff;
+
 color:black;
 
 }
 
-.delete-btn{
-
-background:#dc3545;
-color:white;
-
-}
+/* HOVER */
 
 .edit-btn:hover,
-.delete-btn:hover{
+.delete-btn:hover,
+.members-btn:hover,
+.attendance-btn:hover,
+.qr-btn:hover,
+.open-attendance-btn:hover{
 
 background:white;
+
 color:black;
 
 transform:translateY(-2px);
@@ -488,9 +605,9 @@ transform:translateY(-2px);
 
 text-align:center;
 
-padding:60px 20px;
+padding:40px 20px;
 
-opacity:0.7;
+opacity:0.8;
 
 }
 
@@ -499,32 +616,37 @@ opacity:0.7;
 @media(max-width:992px){
 
 .main-grid{
-grid-template-columns:1fr;
-}
 
-.form-box{
-position:relative;
-top:0;
+grid-template-columns:1fr;
+
 }
 
 }
 
 @media(max-width:768px){
 
-body{
-padding:18px;
-}
-
 .page-title{
-font-size:32px;
-}
 
-.class-title{
 font-size:24px;
+
 }
 
 .analytics-card h1{
-font-size:32px;
+
+font-size:22px;
+
+}
+
+.class-title{
+
+font-size:20px;
+
+}
+
+body{
+
+padding:15px;
+
 }
 
 }
@@ -534,6 +656,8 @@ font-size:32px;
 </head>
 
 <body>
+
+<div class="main-container">
 
 <!-- TOP BAR -->
 
@@ -623,8 +747,6 @@ action="/admin/create-music-class"
 method="POST"
 >
 
-<!-- CLASS NAME -->
-
 <label class="form-label">
 Class Name
 </label>
@@ -637,8 +759,6 @@ placeholder="Example: Worship Guitar Basics"
 required
 >
 
-<!-- TRAINER -->
-
 <label class="form-label">
 Trainer / Instructor
 </label>
@@ -650,8 +770,6 @@ class="form-control"
 placeholder="Enter trainer name"
 required
 >
-
-<!-- CATEGORY -->
 
 <label class="form-label">
 Category
@@ -667,45 +785,17 @@ required
 Select Category
 </option>
 
-<option>
-Acoustic Guitar
-</option>
-
-<option>
-Electric Guitar
-</option>
-
-<option>
-Keyboard & Piano
-</option>
-
-<option>
-Drums & Rhythm
-</option>
-
-<option>
-Bass Guitar
-</option>
-
-<option>
-Worship Vocals
-</option>
-
-<option>
-Worship Leading
-</option>
-
-<option>
-Multimedia Ministry
-</option>
-
-<option>
-Sound System Training
-</option>
+<option>Acoustic Guitar</option>
+<option>Electric Guitar</option>
+<option>Keyboard & Piano</option>
+<option>Drums & Rhythm</option>
+<option>Bass Guitar</option>
+<option>Worship Vocals</option>
+<option>Worship Leading</option>
+<option>Multimedia Ministry</option>
+<option>Sound System Training</option>
 
 </select>
-
-<!-- SCHEDULE -->
 
 <label class="form-label">
 Schedule
@@ -719,8 +809,6 @@ placeholder="Example: Saturday 3:00 PM"
 required
 >
 
-<!-- LOCATION -->
-
 <label class="form-label">
 Location
 </label>
@@ -733,8 +821,6 @@ placeholder="Example: Church Main Hall"
 required
 >
 
-<!-- DESCRIPTION -->
-
 <label class="form-label">
 Description
 </label>
@@ -745,8 +831,6 @@ class="form-control"
 placeholder="Enter class description..."
 required
 ></textarea>
-
-<!-- BUTTON -->
 
 <button
 type="submit"
@@ -773,20 +857,29 @@ class="create-btn"
 
 <div class="class-card">
 
-<!-- TOP -->
+<!-- TOP ACTIONS -->
+
+<div class="top-actions">
+
+<a
+href="/admin/music-attendance-analytics"
+class="analytics-btn"
+>
+📊 Analytics
+</a>
+
+<div class="category-badge">
+<%= item.category %>
+</div>
+
+</div>
+
+<!-- CLASS TITLE -->
 
 <div class="class-top">
 
 <div class="class-title">
-
 <%= item.class_name %>
-
-</div>
-
-<div class="category-badge">
-
-<%= item.category %>
-
 </div>
 
 </div>
@@ -802,9 +895,7 @@ class="create-btn"
 </div>
 
 <div class="info-value">
-
 <%= item.trainer %>
-
 </div>
 
 </div>
@@ -816,9 +907,7 @@ class="create-btn"
 </div>
 
 <div class="info-value">
-
 <%= item.schedule %>
-
 </div>
 
 </div>
@@ -830,9 +919,7 @@ class="create-btn"
 </div>
 
 <div class="info-value">
-
 <%= item.location %>
-
 </div>
 
 </div>
@@ -842,14 +929,130 @@ class="create-btn"
 <!-- DESCRIPTION -->
 
 <div class="class-description">
-
 <%= item.description %>
+</div>
+
+<!-- ACTION BUTTONS -->
+
+<div class="action-buttons">
+
+<!-- ATTENDANCE STATUS -->
+
+<% if(item.attendance_open === 'OPEN'){ %>
+
+<div
+style="
+display:flex;
+align-items:center;
+gap:10px;
+flex-wrap:wrap;
+width:100%;
+margin-bottom:10px;
+"
+>
+
+<div
+style="
+background:#198754;
+color:white;
+padding:10px 14px;
+border-radius:10px;
+font-size:13px;
+font-weight:700;
+"
+>
+
+🟢 Attendance Open
 
 </div>
 
-<!-- BUTTONS -->
+<div
+style="
+background:rgba(255,255,255,0.08);
+padding:10px 14px;
+border-radius:10px;
+font-size:12px;
+color:#ddd;
+"
+>
 
-<div class="action-buttons">
+⏰ Opened:
+<%= item.attendance_start_time
+? new Date(item.attendance_start_time).toLocaleString()
+: 'N/A'
+%>
+
+</div>
+
+<form
+action="/admin/close-attendance/<%= item.id %>"
+method="POST"
+style="display:inline;"
+>
+
+<button
+type="submit"
+class="delete-btn"
+>
+
+🔒 Close Attendance
+
+</button>
+
+</form>
+
+</div>
+
+<% } else { %>
+
+<div
+style="
+display:flex;
+align-items:center;
+gap:10px;
+flex-wrap:wrap;
+width:100%;
+margin-bottom:10px;
+"
+>
+
+<div
+style="
+background:#dc3545;
+color:white;
+padding:10px 14px;
+border-radius:10px;
+font-size:13px;
+font-weight:700;
+"
+>
+
+🔴 Attendance Closed
+
+</div>
+
+<form
+action="/admin/open-attendance/<%= item.id %>"
+method="POST"
+style="display:inline;"
+>
+
+<button
+type="submit"
+class="open-attendance-btn"
+>
+
+📅 Open Attendance
+
+</button>
+
+</form>
+
+</div>
+
+<% } %>
+
+<!-- EDIT -->
 
 <a
 href="/admin/edit-music-class/<%= item.id %>"
@@ -857,6 +1060,26 @@ class="edit-btn"
 >
 ✏ Edit
 </a>
+
+<!-- MEMBERS -->
+
+<a
+href="/admin/music-class-members/<%= item.id %>"
+class="members-btn"
+>
+👥 Members
+</a>
+
+<!-- ATTENDANCE -->
+
+<a
+href="/admin/music-class-attendance/<%= item.id %>"
+class="attendance-btn"
+>
+📋 Attendance
+</a>
+
+<!-- DELETE -->
 
 <a
 href="/admin/delete-music-class/<%= item.id %>"
@@ -867,7 +1090,9 @@ return confirm(
 )
 "
 >
+
 🗑 Delete
+
 </a>
 
 </div>
@@ -891,6 +1116,8 @@ Create your first ministry training class.
 </div>
 
 <% } %>
+
+</div>
 
 </div>
 

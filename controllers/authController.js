@@ -1,12 +1,17 @@
+require('dotenv').config();
+
 const db = require('../config/db');
 const bcrypt = require('bcrypt');
+const QRCode = require('qrcode');
 
 // =====================================
 // LOGIN PAGE
 // =====================================
 
 exports.loginPage = (req, res) => {
+
     res.render('login');
+
 };
 
 // =====================================
@@ -14,32 +19,141 @@ exports.loginPage = (req, res) => {
 // =====================================
 
 exports.registerPage = (req, res) => {
+
     res.render('register');
+
 };
 
 // =====================================
-// DASHBOARD
+// ADMIN DASHBOARD
 // =====================================
 
-exports.dashboard = (req, res) => {
+exports.dashboard = async (req, res) => {
 
-    if(!req.session.user){
-        return res.redirect('/login');
-    }
+try{
 
-    const user = req.session.user;
+// =====================================
+// CHECK LOGIN
+// =====================================
 
-    if(user.role === 'youth_president'){
+if(!req.session.user){
 
-        return res.render('admin/admin-dashboard', {
-            user
-        });
+return res.redirect('/login');
 
-    }
+}
 
-    return res.render('user/user-dashboard', {
-        user
-    });
+// =====================================
+// ADMIN ONLY
+// =====================================
+
+if(req.session.user.role !== 'admin'){
+
+return res.redirect('/user/dashboard');
+
+}
+
+// =====================================
+// TOTAL MEMBERS
+// =====================================
+
+const [memberResult] =
+await db.promise().query(
+
+`
+SELECT COUNT(*) AS totalMembers
+FROM users
+`
+
+);
+
+// =====================================
+// TOTAL EVENTS
+// =====================================
+
+const [eventResult] =
+await db.promise().query(
+
+`
+SELECT COUNT(*) AS totalEvents
+FROM events
+`
+
+);
+
+// =====================================
+// TOTAL PRAYER REQUESTS
+// =====================================
+
+const [prayerResult] =
+await db.promise().query(
+
+`
+SELECT COUNT(*) AS totalPrayers
+FROM prayer_requests
+`
+
+);
+
+// =====================================
+// TOTAL MUSIC CLASSES
+// =====================================
+
+const [musicResult] =
+await db.promise().query(
+
+`
+SELECT COUNT(*) AS totalMusicClasses
+FROM music_classes
+`
+
+);
+
+// =====================================
+// FINAL COUNTS
+// =====================================
+
+const totalMembers =
+memberResult[0].totalMembers;
+
+const totalEvents =
+eventResult[0].totalEvents;
+
+const totalPrayers =
+prayerResult[0].totalPrayers;
+
+const totalMusicClasses =
+musicResult[0].totalMusicClasses;
+
+// =====================================
+// RENDER DASHBOARD
+// =====================================
+
+res.render(
+
+'admin/dashboard',
+
+{
+
+user:req.session.user,
+
+totalMembers,
+totalEvents,
+totalPrayers,
+totalMusicClasses
+
+}
+
+);
+
+}catch(error){
+
+console.log(error);
+
+return res.send(
+'Dashboard Error'
+);
+
+}
 
 };
 
@@ -511,9 +625,28 @@ exports.userEvents = (req, res) => {
 
 exports.joinEvent = (req, res) => {
 
-    const eventId = req.params.id;
+    // =====================================
+    // CHECK LOGIN
+    // =====================================
 
-    const userId = req.session.user.id;
+    if(!req.session.user){
+
+        return res.redirect('/login');
+
+    }
+
+    const eventId =
+    req.params.id;
+
+    const userId =
+    req.session.user.id;
+
+    const fullname =
+    req.session.user.fullname;
+
+    // =====================================
+    // CHECK EXISTING RESPONSE
+    // =====================================
 
     db.query(
 
@@ -523,17 +656,23 @@ exports.joinEvent = (req, res) => {
         WHERE event_id = ?
         AND user_id = ?
         `,
+
         [eventId, userId],
 
         (err, results) => {
 
             if(err){
+
                 console.log(err);
-                return res.send('Database Error');
+
+                return res.send(
+                    'Database Error'
+                );
+
             }
 
             // =====================================
-            // IF RESPONSE EXISTS -> UPDATE
+            // UPDATE EXISTING RESPONSE
             // =====================================
 
             if(results.length > 0){
@@ -542,20 +681,34 @@ exports.joinEvent = (req, res) => {
 
                     `
                     UPDATE event_responses
-                    SET response_status = 'JOINING'
+
+                    SET response_status = ?
+
                     WHERE event_id = ?
                     AND user_id = ?
                     `,
-                    [eventId, userId],
+
+                    [
+                        'JOINING',
+                        eventId,
+                        userId
+                    ],
 
                     (err) => {
 
                         if(err){
+
                             console.log(err);
-                            return res.send('Update Error');
+
+                            return res.send(
+                                'Update Failed'
+                            );
+
                         }
 
-                        res.redirect('/user/events');
+                        return res.redirect(
+                            '/user/events'
+                        );
 
                     }
 
@@ -564,7 +717,7 @@ exports.joinEvent = (req, res) => {
             }
 
             // =====================================
-            // IF NO RESPONSE -> INSERT
+            // INSERT NEW RESPONSE
             // =====================================
 
             else{
@@ -576,20 +729,35 @@ exports.joinEvent = (req, res) => {
                     (
                         event_id,
                         user_id,
+                        fullname,
                         response_status
                     )
-                    VALUES (?, ?, 'JOINING')
+
+                    VALUES (?, ?, ?, ?)
                     `,
-                    [eventId, userId],
+
+                    [
+                        eventId,
+                        userId,
+                        fullname,
+                        'JOINING'
+                    ],
 
                     (err) => {
 
                         if(err){
+
                             console.log(err);
-                            return res.send('Insert Error');
+
+                            return res.send(
+                                'Insert Failed'
+                            );
+
                         }
 
-                        res.redirect('/user/events');
+                        return res.redirect(
+                            '/user/events'
+                        );
 
                     }
 
@@ -609,9 +777,28 @@ exports.joinEvent = (req, res) => {
 
 exports.notJoinEvent = (req, res) => {
 
-    const eventId = req.params.id;
+    // =====================================
+    // CHECK LOGIN
+    // =====================================
 
-    const userId = req.session.user.id;
+    if(!req.session.user){
+
+        return res.redirect('/login');
+
+    }
+
+    const eventId =
+    req.params.id;
+
+    const userId =
+    req.session.user.id;
+
+    const fullname =
+    req.session.user.fullname;
+
+    // =====================================
+    // CHECK EXISTING RESPONSE
+    // =====================================
 
     db.query(
 
@@ -621,17 +808,23 @@ exports.notJoinEvent = (req, res) => {
         WHERE event_id = ?
         AND user_id = ?
         `,
+
         [eventId, userId],
 
         (err, results) => {
 
             if(err){
+
                 console.log(err);
-                return res.send('Database Error');
+
+                return res.send(
+                    'Database Error'
+                );
+
             }
 
             // =====================================
-            // IF RESPONSE EXISTS -> UPDATE
+            // UPDATE EXISTING RESPONSE
             // =====================================
 
             if(results.length > 0){
@@ -640,20 +833,34 @@ exports.notJoinEvent = (req, res) => {
 
                     `
                     UPDATE event_responses
-                    SET response_status = 'NOT JOINING'
+
+                    SET response_status = ?
+
                     WHERE event_id = ?
                     AND user_id = ?
                     `,
-                    [eventId, userId],
+
+                    [
+                        'NOT JOINING',
+                        eventId,
+                        userId
+                    ],
 
                     (err) => {
 
                         if(err){
+
                             console.log(err);
-                            return res.send('Update Error');
+
+                            return res.send(
+                                'Update Failed'
+                            );
+
                         }
 
-                        res.redirect('/user/events');
+                        return res.redirect(
+                            '/user/events'
+                        );
 
                     }
 
@@ -662,7 +869,7 @@ exports.notJoinEvent = (req, res) => {
             }
 
             // =====================================
-            // IF NO RESPONSE -> INSERT
+            // INSERT NEW RESPONSE
             // =====================================
 
             else{
@@ -674,20 +881,35 @@ exports.notJoinEvent = (req, res) => {
                     (
                         event_id,
                         user_id,
+                        fullname,
                         response_status
                     )
-                    VALUES (?, ?, 'NOT JOINING')
+
+                    VALUES (?, ?, ?, ?)
                     `,
-                    [eventId, userId],
+
+                    [
+                        eventId,
+                        userId,
+                        fullname,
+                        'NOT JOINING'
+                    ],
 
                     (err) => {
 
                         if(err){
+
                             console.log(err);
-                            return res.send('Insert Error');
+
+                            return res.send(
+                                'Insert Failed'
+                            );
+
                         }
 
-                        res.redirect('/user/events');
+                        return res.redirect(
+                            '/user/events'
+                        );
 
                     }
 
@@ -742,58 +964,33 @@ exports.prayerRequestListPage = (req, res) => {
     db.query(
 
         `
-        SELECT *
+        SELECT
+            prayer_requests.*,
+
+            (
+                SELECT COUNT(*)
+                FROM prayer_supports
+                WHERE prayer_supports.prayer_id = prayer_requests.id
+            ) AS support_count
+
         FROM prayer_requests
+
         ORDER BY created_at DESC
         `,
 
-        async (err, prayers) => {
-
-            // =====================================
-            // DATABASE ERROR
-            // =====================================
+        (err, prayers) => {
 
             if(err){
 
                 console.log(err);
 
-                return res.send('Database Error');
-
-            }
-
-            // =====================================
-            // GET SUPPORTERS OF EACH PRAYER
-            // =====================================
-
-            for (const prayer of prayers) {
-
-                const [supporters] =
-                await db.promise().query(
-
-                    `
-                    SELECT fullname
-                    FROM prayer_supports
-                    WHERE prayer_id = ?
-                    `,
-
-                    [prayer.id]
-
+                return res.send(
+                    'Database Error'
                 );
 
-                // SAVE SUPPORTERS
-
-                prayer.supporters = supporters;
-
-                // COUNT SUPPORTERS
-
-                prayer.support_count =
-                supporters.length;
-
             }
 
-            // =====================================
             // ANALYTICS
-            // =====================================
 
             const total =
             prayers.length;
@@ -817,9 +1014,7 @@ exports.prayerRequestListPage = (req, res) => {
 
             });
 
-            // =====================================
             // RENDER PAGE
-            // =====================================
 
             res.render(
 
@@ -1061,8 +1256,18 @@ exports.communityPrayers = (req, res) => {
     db.query(
 
         `
-        SELECT *
+        SELECT
+
+            prayer_requests.*,
+
+            (
+                SELECT COUNT(*)
+                FROM prayer_supports
+                WHERE prayer_supports.prayer_id = prayer_requests.id
+            ) AS support_count
+
         FROM prayer_requests
+
         ORDER BY created_at DESC
         `,
 
@@ -1092,8 +1297,6 @@ exports.communityPrayers = (req, res) => {
                         return res.send('Database Error');
 
                     }
-
-                    // USER SUPPORTED PRAYERS
 
                     db.query(
 
@@ -1372,13 +1575,25 @@ exports.createPrayerRequest = (req, res) => {
 
 exports.prayForRequest = (req, res) => {
 
+    // =====================================
+    // CHECK LOGIN
+    // =====================================
+
+    if(!req.session.user){
+
+        return res.redirect('/login');
+
+    }
+
     const prayer_id =
     req.params.id;
 
     const fullname =
     req.session.user.fullname;
 
-    // CHECK EXISTING SUPPORT
+    // =====================================
+    // CHECK IF ALREADY PRAYED
+    // =====================================
 
     db.query(
 
@@ -1389,29 +1604,51 @@ exports.prayForRequest = (req, res) => {
         AND fullname = ?
         `,
 
-        [prayer_id, fullname],
+        [
+            prayer_id,
+            fullname
+        ],
 
         (err, results) => {
+
+            // DATABASE ERROR
 
             if(err){
 
                 console.log(err);
 
-                return res.send('Database Error');
-
-            }
-
-            // ALREADY PRAYED
-
-            if(results.length > 0){
-
-                return res.redirect(
-                    '/user/community-prayers'
+                return res.send(
+                    'Database Error'
                 );
 
             }
 
+            // =====================================
+            // ALREADY PRAYED
+            // =====================================
+
+            if(results.length > 0){
+
+                return res.send(`
+
+                <script>
+
+                alert(
+                'You already prayed for this request.'
+                );
+
+                window.location.href =
+                '/user/community-prayers';
+
+                </script>
+
+                `);
+
+            }
+
+            // =====================================
             // INSERT SUPPORT
+            // =====================================
 
             db.query(
 
@@ -1421,6 +1658,7 @@ exports.prayForRequest = (req, res) => {
                     prayer_id,
                     fullname
                 )
+
                 VALUES (?, ?)
                 `,
 
@@ -1431,22 +1669,30 @@ exports.prayForRequest = (req, res) => {
 
                 (err) => {
 
+                    // INSERT ERROR
+
                     if(err){
 
                         console.log(err);
 
-                        return res.send('Database Error');
+                        return res.send(
+                            'Insert Failed'
+                        );
 
                     }
 
-                    // UPDATE COUNT
+                    // =====================================
+                    // UPDATE PRAYER COUNT
+                    // =====================================
 
                     db.query(
 
                         `
                         UPDATE prayer_requests
+
                         SET prayed_count =
                         prayed_count + 1
+
                         WHERE id = ?
                         `,
 
@@ -1454,17 +1700,34 @@ exports.prayForRequest = (req, res) => {
 
                         (err) => {
 
+                            // UPDATE ERROR
+
                             if(err){
 
                                 console.log(err);
 
-                                return res.send('Database Error');
+                                return res.send(
+                                    'Update Failed'
+                                );
 
                             }
 
-                            res.redirect(
-                                '/user/community-prayers'
+                            // SUCCESS
+
+                            return res.send(`
+
+                            <script>
+
+                            alert(
+                            'Prayer support added successfully.'
                             );
+
+                            window.location.href =
+                            '/user/community-prayers';
+
+                            </script>
+
+                            `);
 
                         }
 
@@ -1537,10 +1800,19 @@ exports.adminMusicClasses = (req, res) => {
 
     }
 
+    // ADMIN ONLY
+
+    if(req.session.user.role !== 'admin'){
+
+        return res.redirect('/dashboard');
+
+    }
+
     db.query(
 
         `
         SELECT *
+
         FROM music_classes
 
         ORDER BY created_at DESC
@@ -1558,9 +1830,7 @@ exports.adminMusicClasses = (req, res) => {
 
             }
 
-            // =====================================
             // ANALYTICS
-            // =====================================
 
             const totalClasses =
             results.length;
@@ -1582,10 +1852,6 @@ exports.adminMusicClasses = (req, res) => {
                     )
                 )
             ].length;
-
-            // =====================================
-            // RENDER PAGE
-            // =====================================
 
             res.render(
 
@@ -1614,6 +1880,8 @@ exports.adminMusicClasses = (req, res) => {
 
 };
 
+
+
 // =====================================
 // CREATE MUSIC CLASS
 // =====================================
@@ -1623,6 +1891,12 @@ exports.createMusicClass = (req, res) => {
     if(!req.session.user){
 
         return res.redirect('/login');
+
+    }
+
+    if(req.session.user.role !== 'admin'){
+
+        return res.redirect('/dashboard');
 
     }
 
@@ -1705,6 +1979,8 @@ exports.createMusicClass = (req, res) => {
 
 };
 
+
+
 // =====================================
 // USER MUSIC CLASSES
 // =====================================
@@ -1728,23 +2004,29 @@ exports.userMusicClasses = (req, res) => {
         music_classes.*,
 
         (
+
             SELECT COUNT(*)
+
             FROM music_class_members
 
-            WHERE music_class_members.class_id
+            WHERE music_class_members.music_class_id
             = music_classes.id
+
         )
 
         AS total_members,
 
         (
+
             SELECT COUNT(*)
+
             FROM music_class_members
 
-            WHERE music_class_members.class_id
+            WHERE music_class_members.music_class_id
             = music_classes.id
 
             AND music_class_members.user_id = ?
+
         )
 
         AS joined
@@ -1789,8 +2071,10 @@ exports.userMusicClasses = (req, res) => {
 
 };
 
+
+
 // =====================================
-// VIEW SINGLE MUSIC CLASS
+// VIEW MUSIC CLASS
 // =====================================
 
 exports.viewMusicClass = (req, res) => {
@@ -1808,6 +2092,7 @@ exports.viewMusicClass = (req, res) => {
 
         `
         SELECT *
+
         FROM music_classes
 
         WHERE id = ?
@@ -1857,6 +2142,8 @@ exports.viewMusicClass = (req, res) => {
 
 };
 
+
+
 // =====================================
 // JOIN MUSIC CLASS
 // =====================================
@@ -1869,11 +2156,11 @@ exports.joinMusicClass = (req, res) => {
 
     }
 
-    const classId =
-    req.params.id;
-
     const userId =
     req.session.user.id;
+
+    const classId =
+    req.params.id;
 
     // CHECK EXISTING MEMBER
 
@@ -1881,15 +2168,18 @@ exports.joinMusicClass = (req, res) => {
 
         `
         SELECT *
+
         FROM music_class_members
 
-        WHERE class_id = ?
-        AND user_id = ?
+        WHERE user_id = ?
+        AND music_class_id = ?
         `,
 
         [
-            classId,
-            userId
+
+            userId,
+            classId
+
         ],
 
         (err, results) => {
@@ -1919,19 +2209,20 @@ exports.joinMusicClass = (req, res) => {
             db.query(
 
                 `
-                INSERT INTO
-                music_class_members
+                INSERT INTO music_class_members
                 (
-                    class_id,
-                    user_id
+                    user_id,
+                    music_class_id
                 )
 
                 VALUES (?, ?)
                 `,
 
                 [
-                    classId,
-                    userId
+
+                    userId,
+                    classId
+
                 ],
 
                 (err) => {
@@ -1941,7 +2232,7 @@ exports.joinMusicClass = (req, res) => {
                         console.log(err);
 
                         return res.send(
-                            'Database Error'
+                            'Failed To Join'
                         );
 
                     }
@@ -1959,6 +2250,8 @@ exports.joinMusicClass = (req, res) => {
     );
 
 };
+
+
 
 // =====================================
 // MY MUSIC CLASSES
@@ -1989,7 +2282,7 @@ exports.myMusicClasses = (req, res) => {
 
         JOIN music_classes
 
-        ON music_class_members.class_id
+        ON music_class_members.music_class_id
         = music_classes.id
 
         WHERE music_class_members.user_id = ?
@@ -2032,6 +2325,8 @@ exports.myMusicClasses = (req, res) => {
 
 };
 
+
+
 // =====================================
 // LEAVE MUSIC CLASS
 // =====================================
@@ -2055,13 +2350,15 @@ exports.leaveMusicClass = (req, res) => {
         `
         DELETE FROM music_class_members
 
-        WHERE class_id = ?
+        WHERE music_class_id = ?
         AND user_id = ?
         `,
 
         [
+
             classId,
             userId
+
         ],
 
         (err) => {
@@ -2086,6 +2383,8 @@ exports.leaveMusicClass = (req, res) => {
 
 };
 
+
+
 // =====================================
 // EDIT MUSIC CLASS PAGE
 // =====================================
@@ -2098,6 +2397,12 @@ exports.editMusicClassPage = (req, res) => {
 
     }
 
+    if(req.session.user.role !== 'admin'){
+
+        return res.redirect('/dashboard');
+
+    }
+
     const id =
     req.params.id;
 
@@ -2105,6 +2410,7 @@ exports.editMusicClassPage = (req, res) => {
 
         `
         SELECT *
+
         FROM music_classes
 
         WHERE id = ?
@@ -2154,6 +2460,8 @@ exports.editMusicClassPage = (req, res) => {
 
 };
 
+
+
 // =====================================
 // UPDATE MUSIC CLASS
 // =====================================
@@ -2163,6 +2471,12 @@ exports.updateMusicClass = (req, res) => {
     if(!req.session.user){
 
         return res.redirect('/login');
+
+    }
+
+    if(req.session.user.role !== 'admin'){
+
+        return res.redirect('/dashboard');
 
     }
 
@@ -2231,6 +2545,8 @@ exports.updateMusicClass = (req, res) => {
 
 };
 
+
+
 // =====================================
 // DELETE MUSIC CLASS
 // =====================================
@@ -2240,6 +2556,12 @@ exports.deleteMusicClass = (req, res) => {
     if(!req.session.user){
 
         return res.redirect('/login');
+
+    }
+
+    if(req.session.user.role !== 'admin'){
+
+        return res.redirect('/dashboard');
 
     }
 
@@ -2253,7 +2575,7 @@ exports.deleteMusicClass = (req, res) => {
         `
         DELETE FROM music_class_members
 
-        WHERE class_id = ?
+        WHERE music_class_id = ?
         `,
 
         [id],
@@ -2308,6 +2630,8 @@ exports.deleteMusicClass = (req, res) => {
 
 };
 
+
+
 // =====================================
 // MUSIC CLASS MEMBERS
 // =====================================
@@ -2317,6 +2641,12 @@ exports.musicClassMembers = (req, res) => {
     if(!req.session.user){
 
         return res.redirect('/login');
+
+    }
+
+    if(req.session.user.role !== 'admin'){
+
+        return res.redirect('/dashboard');
 
     }
 
@@ -2340,7 +2670,7 @@ exports.musicClassMembers = (req, res) => {
         ON music_class_members.user_id
         = users.id
 
-        WHERE music_class_members.class_id = ?
+        WHERE music_class_members.music_class_id = ?
 
         ORDER BY music_class_members.created_at DESC
         `,
@@ -2380,6 +2710,963 @@ exports.musicClassMembers = (req, res) => {
 
 };
 
+
+// =====================================
+// MUSIC CLASS ATTENDANCE PAGE
+// =====================================
+
+exports.musicClassAttendancePage = async (req, res) => {
+
+    try{
+
+        // =====================================
+        // CLASS ID
+        // =====================================
+
+        const classId =
+        req.params.id;
+
+        // =====================================
+        // GET CLASS INFO
+        // =====================================
+
+        const [musicClassResult] =
+        await db.promise().query(
+
+            `
+            SELECT *
+            FROM music_classes
+            WHERE id = ?
+            `,
+
+            [classId]
+
+        );
+
+        // =====================================
+        // CHECK CLASS
+        // =====================================
+
+        if(musicClassResult.length === 0){
+
+            return res.send(
+                'Music class not found.'
+            );
+
+        }
+
+        // =====================================
+        // SINGLE CLASS
+        // =====================================
+
+        const musicClass =
+        musicClassResult[0];
+
+        // =====================================
+        // TODAY DATE
+        // =====================================
+
+        const attendanceDate =
+        new Date()
+        .toISOString()
+        .split('T')[0];
+
+        // =====================================
+        // GET MEMBERS
+        // =====================================
+
+        const [members] =
+        await db.promise().query(
+
+            `
+            SELECT
+
+            users.id,
+            users.fullname,
+            users.email
+
+            FROM music_class_members
+
+            JOIN users
+            ON music_class_members.user_id = users.id
+
+            WHERE music_class_members.music_class_id = ?
+
+            ORDER BY users.fullname ASC
+            `,
+
+            [classId]
+
+        );
+
+        // =====================================
+        // GET TODAY ATTENDANCE
+        // =====================================
+
+        const [attendanceRows] =
+        await db.promise().query(
+
+        `
+        SELECT
+
+        user_id,
+        status
+
+        FROM music_class_attendance
+
+        WHERE music_class_id = ?
+        AND attendance_date = CURDATE()
+        AND created_at >= ?
+        `,
+
+        [
+        classId,
+        musicClass.attendance_start_time
+        ]
+
+);
+        // =====================================
+        // CREATE ATTENDANCE MAP
+        // =====================================
+
+        const attendanceMap = {};
+
+        attendanceRows.forEach(item => {
+
+            attendanceMap[item.user_id] =
+            item.status;
+
+        });
+
+        // =====================================
+        // FINAL MEMBERS
+        // =====================================
+
+        const finalMembers =
+        members.map(member => {
+
+            return {
+
+                ...member,
+
+                attendance_status:
+                attendanceMap[member.id] || null
+
+            };
+
+        });
+
+        // =====================================
+        // RENDER PAGE
+        // =====================================
+
+        return res.render(
+
+            'admin/music-class-attendance',
+
+            {
+
+                members:
+                finalMembers,
+
+                classId,
+
+                musicClass,
+
+                user:
+                req.session.user
+
+            }
+
+        );
+
+    }
+
+    catch(error){
+
+        console.log(error);
+
+        return res.send(
+            'Database Error'
+        );
+
+    }
+
+};
+
+// =====================================
+// OPEN ATTENDANCE SESSION
+// =====================================
+
+exports.openAttendance = async (req, res) => {
+
+try{
+
+// =====================================
+// CLASS ID
+// =====================================
+
+const classId =
+req.params.id;
+
+// =====================================
+// CREATE NEW SESSION
+// =====================================
+
+const [sessionResult] =
+await db.promise().query(
+
+`
+INSERT INTO music_attendance_sessions (
+
+music_class_id,
+session_date,
+opened_at
+
+)
+
+VALUES (
+
+?,
+CURDATE(),
+NOW()
+
+)
+`,
+
+[classId]
+
+);
+
+// =====================================
+// SESSION ID
+// =====================================
+
+const sessionId =
+sessionResult.insertId;
+
+// =====================================
+// OPEN ATTENDANCE
+// =====================================
+
+await db.promise().query(
+
+`
+UPDATE music_classes
+
+SET
+
+attendance_open = 'OPEN',
+attendance_start_time =
+CONVERT_TZ(NOW(), '+00:00', '+08:00'),
+current_session_id = ?
+
+WHERE id = ?
+`,
+
+[
+sessionId,
+classId
+]
+
+);
+
+// =====================================
+// SUCCESS
+// =====================================
+
+return res.redirect(
+'/admin/music-classes'
+);
+
+}catch(error){
+
+console.log(error);
+
+return res.send(
+'Error Opening Attendance'
+);
+
+}
+
+};
+
+// =====================================
+// CLOSE ATTENDANCE SESSION
+// =====================================
+
+exports.closeAttendance = async (req, res) => {
+
+try{
+
+// =====================================
+// CLASS ID
+// =====================================
+
+const classId =
+req.params.id;
+
+// =====================================
+// GET CLASS
+// =====================================
+
+const [classRows] =
+await db.promise().query(
+
+`
+SELECT *
+FROM music_classes
+WHERE id = ?
+`,
+
+[classId]
+
+);
+
+// =====================================
+// CHECK CLASS
+// =====================================
+
+if(classRows.length === 0){
+
+return res.send(
+'Music class not found.'
+);
+
+}
+
+// =====================================
+// CLASS DATA
+// =====================================
+
+const musicClass =
+classRows[0];
+
+// =====================================
+// SESSION ID
+// =====================================
+
+const currentSessionId =
+musicClass.current_session_id;
+
+// =====================================
+// GET MEMBERS
+// =====================================
+
+const [members] =
+await db.promise().query(
+
+`
+SELECT user_id
+FROM music_class_members
+WHERE music_class_id = ?
+`,
+
+[classId]
+
+);
+
+// =====================================
+// LOOP ALL MEMBERS
+// =====================================
+
+for(const member of members){
+
+// =====================================
+// CHECK IF ALREADY ATTENDED
+// =====================================
+
+const [existingAttendance] =
+await db.promise().query(
+
+`
+SELECT *
+FROM music_class_attendance
+
+WHERE
+
+music_class_id = ?
+AND user_id = ?
+AND session_id = ?
+`,
+
+[
+classId,
+member.user_id,
+currentSessionId
+]
+
+);
+
+// =====================================
+// AUTO ABSENT
+// =====================================
+
+if(existingAttendance.length === 0){
+
+await db.promise().query(
+
+`
+INSERT INTO music_class_attendance (
+
+music_class_id,
+user_id,
+attendance_date,
+status,
+check_in_time,
+session_id,
+created_at
+
+)
+
+VALUES (
+
+?,
+?,
+CURDATE(),
+?,
+NULL,
+?,
+NOW()
+
+)
+`,
+
+[
+classId,
+member.user_id,
+'Absent',
+currentSessionId
+]
+
+);
+
+}
+
+}
+
+// =====================================
+// CLOSE SESSION
+// =====================================
+
+await db.promise().query(
+
+`
+UPDATE music_classes
+
+SET
+
+attendance_open = 'CLOSED'
+
+WHERE id = ?
+`,
+
+[classId]
+
+);
+
+// =====================================
+// SUCCESS
+// =====================================
+
+return res.send(`
+
+<script>
+
+alert('Attendance closed successfully.');
+
+window.location.href =
+'/admin/music-classes';
+
+</script>
+
+`);
+
+}catch(error){
+
+console.log(error);
+
+return res.send(
+'Close Attendance Failed'
+);
+
+}
+
+};
+
+// =====================================
+// USER MUSIC ATTENDANCE
+// =====================================
+
+exports.userMusicAttendance = (req, res) => {
+
+    // =====================================
+    // CHECK LOGIN
+    // =====================================
+
+    if(!req.session.user){
+
+        return res.redirect('/login');
+
+    }
+
+    // =====================================
+    // USER ONLY
+    // =====================================
+
+    if(req.session.user.role === 'admin'){
+
+        return res.redirect('/dashboard');
+
+    }
+
+    // =====================================
+    // USER ID
+    // =====================================
+
+    const userId =
+    req.session.user.id;
+
+    // =====================================
+    // GET ATTENDANCE
+    // =====================================
+
+    db.query(
+
+        `
+        SELECT
+
+        music_class_attendance.*,
+
+        music_classes.class_name
+
+        FROM music_class_attendance
+
+        INNER JOIN music_classes
+
+        ON music_classes.id =
+        music_class_attendance.music_class_id
+
+        WHERE music_class_attendance.user_id = ?
+
+        ORDER BY
+        music_class_attendance.attendance_date DESC
+        `,
+
+        [userId],
+
+        (err, attendance) => {
+
+            if(err){
+
+                console.log(err);
+
+                return res.send(
+                    'Database Error'
+                );
+
+            }
+
+            // =====================================
+            // RENDER PAGE
+            // =====================================
+
+            res.render(
+
+                'user/music-attendance',
+
+                {
+
+                    attendance,
+
+                    user:
+                    req.session.user
+
+                }
+
+            );
+
+        }
+
+    );
+
+};
+
+// =====================================
+// RECORD MUSIC CLASS ATTENDANCE
+// =====================================
+
+exports.recordAttendance = async (req, res) => {
+
+try{
+
+// USER ID
+
+const userId =
+req.session.user.id;
+
+// CLASS ID
+
+const classId =
+req.params.id;
+
+// GET CLASS
+
+const [classRows] =
+await db.promise().query(
+
+`
+SELECT *
+FROM music_classes
+WHERE id = ?
+`,
+
+[classId]
+
+);
+
+// CHECK CLASS
+
+if(classRows.length === 0){
+
+return res.send(
+'Music class not found.'
+);
+
+}
+
+// CLASS DATA
+
+const musicClass =
+classRows[0];
+
+// CHECK IF OPEN
+
+if(musicClass.attendance_open !== 'OPEN'){
+
+return res.send(
+'Attendance is currently closed.'
+);
+
+}
+
+// ACTIVE SESSION
+
+const currentSessionId =
+musicClass.current_session_id;
+
+// CURRENT TIME
+
+const now =
+new Date();
+
+// OPEN TIME
+
+const openTime =
+new Date(
+musicClass.attendance_start_time
+);
+
+// TIME DIFFERENCE
+
+const diffMinutes =
+
+Math.floor(
+
+(now - openTime)
+
+/
+
+1000
+
+/
+
+60
+
+);
+
+// STATUS
+
+let status = 'Present';
+
+if(diffMinutes > 15){
+
+status = 'Late';
+
+}
+
+// CHECK DUPLICATE
+
+const [existingAttendance] =
+await db.promise().query(
+
+`
+SELECT *
+FROM music_class_attendance
+
+WHERE
+
+music_class_id = ?
+AND user_id = ?
+AND session_id = ?
+`,
+
+[
+classId,
+userId,
+currentSessionId
+]
+
+);
+
+// ALREADY RECORDED
+
+if(existingAttendance.length > 0){
+
+return res.send(`
+
+<script>
+
+alert('Attendance already recorded.');
+
+window.location.href =
+'/user/music-classes';
+
+</script>
+
+`);
+
+}
+
+// INSERT ATTENDANCE
+
+await db.promise().query(
+
+`
+INSERT INTO music_class_attendance (
+
+music_class_id,
+user_id,
+attendance_date,
+status,
+check_in_time,
+session_id,
+created_at
+
+)
+
+VALUES (
+
+?,
+?,
+CURDATE(),
+?,
+CONVERT_TZ(NOW(), '+00:00', '+08:00'),
+?,
+NOW()
+
+)
+`,
+
+[
+classId,
+userId,
+status,
+currentSessionId
+]
+
+);
+
+// SUCCESS
+
+return res.send(`
+
+<script>
+
+alert('Attendance recorded successfully.');
+
+window.location.href =
+'/user/music-classes';
+
+</script>
+
+`);
+
+}catch(error){
+
+console.log(error);
+
+return res.send(
+'Attendance Failed'
+);
+
+}
+
+};
+
+// =====================================
+// MUSIC ATTENDANCE ANALYTICS
+// =====================================
+
+exports.musicAttendanceAnalytics = async (req, res) => {
+
+try{
+
+// =====================================
+// TOTAL PRESENT
+// =====================================
+
+const [presentResult] =
+await db.promise().query(
+
+`
+SELECT COUNT(*) AS total
+FROM music_class_attendance
+WHERE status = 'Present'
+`
+);
+
+// =====================================
+// TOTAL LATE
+// =====================================
+
+const [lateResult] =
+await db.promise().query(
+
+`
+SELECT COUNT(*) AS total
+FROM music_class_attendance
+WHERE status = 'Late'
+`
+);
+
+// =====================================
+// TOTAL ABSENT
+// =====================================
+
+const [absentResult] =
+await db.promise().query(
+
+`
+SELECT COUNT(*) AS total
+FROM music_class_attendance
+WHERE status = 'Absent'
+`
+);
+
+// =====================================
+// TOTAL RECORDS
+// =====================================
+
+const [totalResult] =
+await db.promise().query(
+
+`
+SELECT COUNT(*) AS total
+FROM music_class_attendance
+`
+);
+
+// =====================================
+// SESSION HISTORY
+// =====================================
+
+const [sessionHistory] =
+await db.promise().query(
+
+`
+SELECT
+
+music_attendance_sessions.id AS session_id,
+
+music_attendance_sessions.session_date,
+
+music_classes.class_name,
+
+users.fullname,
+
+music_class_attendance.status,
+
+music_class_attendance.check_in_time
+
+FROM music_class_attendance
+
+LEFT JOIN users
+ON music_class_attendance.user_id = users.id
+
+LEFT JOIN music_attendance_sessions
+ON music_class_attendance.session_id =
+music_attendance_sessions.id
+
+LEFT JOIN music_classes
+ON music_attendance_sessions.music_class_id =
+music_classes.id
+
+ORDER BY
+music_attendance_sessions.id DESC,
+music_class_attendance.check_in_time ASC
+`
+);
+
+// =====================================
+// ATTENDANCE RATE
+// =====================================
+
+let attendanceRate = 0;
+
+if(totalResult[0].total > 0){
+
+attendanceRate = (
+
+(
+presentResult[0].total /
+totalResult[0].total
+) * 100
+
+).toFixed(1);
+
+}
+
+// =====================================
+// RENDER PAGE
+// =====================================
+
+res.render(
+
+'admin/music-attendance-analytics',
+
+{
+
+totalPresent:
+presentResult[0].total,
+
+totalLate:
+lateResult[0].total,
+
+totalAbsent:
+absentResult[0].total,
+
+attendanceRate,
+
+sessionHistory,
+
+user:
+req.session.user
+
+}
+
+);
+
+}catch(error){
+
+console.log(error);
+
+return res.send(error.message);
+
+}
+
+};
+
 // =====================================
 // SEARCH MUSIC CLASSES
 // =====================================
@@ -2399,6 +3686,7 @@ exports.searchMusicClasses = (req, res) => {
 
         `
         SELECT *
+
         FROM music_classes
 
         WHERE
@@ -2478,6 +3766,8 @@ exports.searchMusicClasses = (req, res) => {
 
 };
 
+
+
 // =====================================
 // FILTER MUSIC CLASSES
 // =====================================
@@ -2497,6 +3787,7 @@ exports.filterMusicClasses = (req, res) => {
 
         `
         SELECT *
+
         FROM music_classes
 
         WHERE category = ?
@@ -2563,5 +3854,603 @@ exports.filterMusicClasses = (req, res) => {
         }
 
     );
+
+};
+
+// =====================================
+// REGISTER USER
+// =====================================
+
+exports.registerUser = async (req, res) => {
+
+    const {
+
+        fullname,
+        email,
+        password
+
+    } = req.body;
+
+    // CHECK EMPTY FIELDS
+
+    if(!fullname || !email || !password){
+
+        return res.send(
+            'Please fill in all fields'
+        );
+
+    }
+
+    // CHECK EXISTING EMAIL
+
+    db.query(
+
+        `
+        SELECT *
+        FROM users
+        WHERE email = ?
+        `,
+
+        [email],
+
+        async (err, results) => {
+
+            // DATABASE ERROR
+
+            if(err){
+
+                console.log(err);
+
+                return res.send(
+                    'Database Error'
+                );
+
+            }
+
+            // EMAIL EXISTS
+
+            if(results.length > 0){
+
+                return res.send(
+                    'Email Already Exists'
+                );
+
+            }
+
+            try{
+
+                // HASH PASSWORD
+
+                const hashedPassword =
+                await bcrypt.hash(password, 10);
+
+                // =====================================
+                // AUTO ADMIN DETECTION
+                // =====================================
+
+                const role =
+
+                email === 'casicasmariel@gmail.com'
+
+                ? 'admin'
+
+                : 'youth_member';
+
+                // =====================================
+                // INSERT USER
+                // =====================================
+
+                db.query(
+
+                    `
+                    INSERT INTO users
+                    (
+                        fullname,
+                        email,
+                        password,
+                        role
+                    )
+
+                    VALUES (?, ?, ?, ?)
+                    `,
+
+                    [
+
+                        fullname,
+                        email,
+                        hashedPassword,
+                        role
+
+                    ],
+
+                    (err) => {
+
+                        // INSERT ERROR
+
+                        if(err){
+
+                            console.log(err);
+
+                            return res.send(
+                                'Registration Failed'
+                            );
+
+                        }
+
+                        // SUCCESS
+
+                        res.redirect('/login');
+
+                    }
+
+                );
+
+            }
+
+            catch(error){
+
+                console.log(error);
+
+                return res.send(
+                    'Server Error'
+                );
+
+            }
+
+        }
+
+    );
+
+};
+
+
+// =====================================
+// LOGIN USER
+// =====================================
+
+exports.loginUser = (req, res) => {
+
+    const {
+
+        email,
+        password
+
+    } = req.body;
+
+    db.query(
+
+        `
+        SELECT *
+        FROM users
+        WHERE email = ?
+        `,
+
+        [email],
+
+        async (err, results) => {
+
+            if(err){
+
+                console.log(err);
+
+                return res.send(
+                    'Database Error'
+                );
+
+            }
+
+            // USER NOT FOUND
+
+            if(results.length === 0){
+
+                return res.send(
+                    'User Not Found'
+                );
+
+            }
+
+            const user =
+            results[0];
+
+            // CHECK PASSWORD
+
+            const match =
+            await bcrypt.compare(
+
+                password,
+                user.password
+
+            );
+
+            
+            if(!match){
+
+            return res.send(`
+
+            <html>
+
+            <head>
+
+            <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+            />
+
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+            </head>
+
+            <body
+            style="
+            background:#12001f;
+            "
+            >
+
+            <script>
+
+            Swal.fire({
+
+            icon: 'error',
+
+            title: 'Authentication Failed',
+
+            text: 'Incorrect password. Please try again.',
+
+            confirmButtonColor: '#6a0dad',
+
+            background: '#2c003e',
+
+            color: '#ffffff',
+
+            showClass: {
+
+            popup: 'animate__animated animate__fadeInDown'
+
+            },
+
+            hideClass: {
+
+            popup: 'animate__animated animate__fadeOutUp'
+
+            }
+
+            }).then(() => {
+
+            window.location.href = '/login';
+
+            });
+
+            </script>
+
+            </body>
+
+            </html>
+
+            `);
+
+            }
+
+            // SESSION
+
+            req.session.user = {
+
+                id:
+                user.id,
+
+                fullname:
+                user.fullname,
+
+                email:
+                user.email,
+
+                role:
+                user.role
+
+            };
+
+            // =====================================
+            // ADMIN LOGIN
+            // =====================================
+
+            if(user.role === 'admin'){
+
+                return res.redirect(
+                    '/dashboard'
+                );
+
+            }
+
+            // =====================================
+            // USER LOGIN
+            // =====================================
+
+            else{
+
+                return res.redirect(
+                    '/user/dashboard'
+                );
+
+            }
+
+        }
+
+    );
+
+};
+
+
+
+// =====================================
+// LOGOUT USER
+// =====================================
+
+exports.logoutUser = (req, res) => {
+
+    req.session.destroy(() => {
+
+        res.redirect('/login');
+
+    });
+
+};
+// =====================================
+// MANAGE MEMBERS PAGE
+// =====================================
+
+exports.manageMembers = async (req, res) => {
+
+try{
+
+const [members] =
+await db.promise().query(
+
+`
+SELECT *
+FROM users
+ORDER BY id DESC
+`
+
+);
+
+res.render(
+
+'admin/manage-members',
+
+{
+
+members,
+user:req.session.user
+
+}
+
+);
+
+}catch(error){
+
+console.log(error);
+
+return res.send(
+'Manage Members Error'
+);
+
+}
+
+};
+
+// =====================================
+// DELETE MEMBER
+// =====================================
+
+exports.deleteMember = async (req, res) => {
+
+try{
+
+const memberId =
+req.params.id;
+
+await db.promise().query(
+
+`
+DELETE FROM users
+WHERE id = ?
+`,
+
+[memberId]
+
+);
+
+return res.redirect(
+'/admin/manage-members'
+);
+
+}catch(error){
+
+console.log(error);
+
+return res.send(
+'Delete Member Error'
+);
+
+}
+
+};
+
+// =====================================
+// USER DASHBOARD
+// =====================================
+
+exports.userDashboard = async (req, res) => {
+
+try{
+
+// =====================================
+// CHECK SESSION
+// =====================================
+
+if(!req.session.user){
+
+return res.redirect('/login');
+
+}
+
+// USER ID
+
+const userId =
+req.session.user.id;
+
+// DEFAULT VALUES
+
+let joinedClasses = 0;
+let joinedEvents = 0;
+let prayerCount = 0;
+let attendanceCount = 0;
+
+// =====================================
+// MUSIC CLASSES
+// =====================================
+
+try{
+
+const [musicResult] =
+await db.promise().query(
+
+`
+SELECT COUNT(*) AS total
+FROM music_class_attendance
+WHERE user_id = ?
+`,
+
+[userId]
+
+);
+
+joinedClasses =
+musicResult[0].total;
+
+}catch(error){
+
+console.log(
+'Music Classes Table Missing'
+);
+
+}
+
+// =====================================
+// EVENTS
+// =====================================
+
+try{
+
+const [eventResult] =
+await db.promise().query(
+
+`
+SELECT COUNT(*) AS total
+FROM events
+`
+
+);
+
+joinedEvents =
+eventResult[0].total;
+
+}catch(error){
+
+console.log(
+'Events Table Missing'
+);
+
+}
+
+// =====================================
+// PRAYER REQUESTS
+// =====================================
+
+try{
+
+const [prayerResult] =
+await db.promise().query(
+
+`
+SELECT COUNT(*) AS total
+FROM prayer_requests
+WHERE user_id = ?
+`,
+
+[userId]
+
+);
+
+prayerCount =
+prayerResult[0].total;
+
+}catch(error){
+
+console.log(
+'Prayer Requests Table Missing'
+);
+
+}
+
+// =====================================
+// ATTENDANCE
+// =====================================
+
+try{
+
+const [attendanceResult] =
+await db.promise().query(
+
+`
+SELECT COUNT(*) AS total
+FROM music_class_attendance
+WHERE user_id = ?
+`,
+
+[userId]
+
+);
+
+attendanceCount =
+attendanceResult[0].total;
+
+}catch(error){
+
+console.log(
+'Attendance Table Missing'
+);
+
+}
+
+// =====================================
+// RENDER DASHBOARD
+// =====================================
+
+res.render(
+
+'user/dashboard',
+
+{
+
+user:req.session.user,
+
+joinedClasses,
+joinedEvents,
+prayerCount,
+attendanceCount
+
+}
+
+);
+
+}catch(error){
+
+console.log(error);
+
+return res.send(
+'User Dashboard Error'
+);
+
+}
 
 };
