@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
@@ -98,7 +99,7 @@ padding:10px;
 
 border-radius:12px;
 
-font-weight:600;
+font-weight:700;
 
 font-size:14px;
 
@@ -234,7 +235,7 @@ margin-top:14px;
 display:grid;
 
 grid-template-columns:
-repeat(4,1fr);
+repeat(3,1fr);
 
 gap:18px;
 
@@ -243,7 +244,7 @@ margin-bottom:24px;
 }
 
 /* ===================================== */
-/* CARDS */
+/* CARD BOX */
 /* ===================================== */
 
 .card-box{
@@ -251,7 +252,7 @@ margin-bottom:24px;
 background:
 rgba(255,255,255,0.10);
 
-padding:22px;
+padding:26px;
 
 border-radius:20px;
 
@@ -261,6 +262,8 @@ box-shadow:
 0 6px 20px rgba(0,0,0,0.15);
 
 transition:0.3s;
+
+min-height:150px;
 
 }
 
@@ -275,9 +278,11 @@ box-shadow:
 
 .card-box h5{
 
-font-size:15px;
-margin-bottom:12px;
-font-weight:600;
+font-size:16px;
+
+margin-bottom:18px;
+
+font-weight:700;
 
 }
 
@@ -287,8 +292,10 @@ font-weight:600;
 
 .value{
 
-font-size:34px;
+font-size:40px;
+
 font-weight:700;
+
 color:#00d4ff;
 
 }
@@ -322,38 +329,6 @@ margin-bottom:18px;
 font-size:22px;
 
 font-weight:700;
-
-}
-
-/* ===================================== */
-/* ACTIVITY */
-/* ===================================== */
-
-.activity{
-
-background:
-rgba(255,255,255,0.08);
-
-padding:14px 16px;
-
-border-radius:14px;
-
-margin-bottom:12px;
-
-font-size:14px;
-
-display:flex;
-align-items:center;
-gap:10px;
-
-transition:0.3s;
-
-}
-
-.activity:hover{
-
-background:
-rgba(255,255,255,0.14);
 
 }
 
@@ -402,6 +377,7 @@ transform:translateY(-3px);
 .quick-card h4{
 
 font-size:18px;
+
 margin-bottom:10px;
 
 }
@@ -409,7 +385,9 @@ margin-bottom:10px;
 .quick-card p{
 
 font-size:13px;
+
 line-height:1.6;
+
 opacity:0.85;
 
 }
@@ -421,27 +399,37 @@ opacity:0.85;
 @media(max-width:992px){
 
 .sidebar{
+
 position:relative;
 width:100%;
 height:auto;
 border-right:none;
+
 }
 
 .main{
+
 margin-left:0;
 padding:18px;
+
 }
 
 .grid{
+
 grid-template-columns:1fr;
+
 }
 
 .quick-actions{
+
 grid-template-columns:1fr;
+
 }
 
 .top-card h1{
+
 font-size:26px;
+
 }
 
 }
@@ -459,7 +447,7 @@ font-size:26px;
 <div class="sidebar">
 
 <img
-src="church-logo.png"
+src="/church-logo.png"
 class="logo"
 >
 
@@ -485,22 +473,13 @@ Youth Member
 📅 Join Events
 </a>
 
-<a href="/user/community-prayers">
-🙏 Community Prayers
-</a>
-
-<a href="/user/my-prayers">
-📝 My Prayer Requests
+<a href="/user/prayer-requests">
+🙏 Prayer Request
 </a>
 
 <a href="/user/music-classes">
 🎵 Music Classes
 </a>
-
-<a href="/user/my-music-classes">
-🎼 My Music Classes
-</a>
-
 
 <a href="/logout">
 🚪 Logout
@@ -582,113 +561,6 @@ MEMBER ACCESS
 
 </div>
 
-<div class="card-box">
-
-<h5>
-✅ Attendance Records
-</h5>
-
-<div class="value">
-<%= attendanceCount || 0 %>
-</div>
-
-</div>
-
-</div>
-
-<!-- ===================================== -->
-<!-- QUICK ACTIONS -->
-<!-- ===================================== -->
-
-<div class="section">
-
-<h3>
-⚡ Quick Actions
-</h3>
-
-<div class="quick-actions">
-
-<a
-href="/user/prayer-requests"
-class="quick-card"
->
-
-<h4>
-🙏 Prayer Requests
-</h4>
-
-<p>
-Submit prayers, support community prayers, and manage testimonies.
-</p>
-
-</a>
-
-<a
-href="/user/events"
-class="quick-card"
->
-
-<h4>
-📅 Join Events
-</h4>
-
-<p>
-View upcoming church and youth fellowship activities.
-</p>
-
-</a>
-
-<a
-href="/user/music-classes"
-class="quick-card"
->
-
-<h4>
-🎵 Music Classes
-</h4>
-
-<p>
-Join worship training and ministry music sessions.
-</p>
-
-</a>
-
-</div>
-
-</div>
-
-<!-- ===================================== -->
-<!-- MEMBER ACTIVITIES -->
-<!-- ===================================== -->
-
-<div class="section">
-
-<h3>
-📌 Member Activities
-</h3>
-
-<div class="activity">
-📢 View church announcements and ministry updates
-</div>
-
-<div class="activity">
-📅 Participate in youth fellowship events
-</div>
-
-<div class="activity">
-🙏 Submit and support prayer requests
-</div>
-
-<div class="activity">
-🎵 Join available music ministry classes
-</div>
-
-<div class="activity">
-✅ Record attendance in active sessions
-</div>
-
-<div class="activity">
-🎼 Track your music ministry participation
 </div>
 
 </div>
@@ -696,4 +568,5 @@ Join worship training and ministry music sessions.
 </div>
 
 </body>
+
 </html>

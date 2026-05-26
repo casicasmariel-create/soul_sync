@@ -4306,7 +4306,7 @@ let prayerCount = 0;
 let attendanceCount = 0;
 
 // =====================================
-// MUSIC CLASSES
+// JOINED MUSIC CLASSES
 // =====================================
 
 try{
@@ -4316,7 +4316,7 @@ await db.promise().query(
 
 `
 SELECT COUNT(*) AS total
-FROM music_class_attendance
+FROM music_class_members
 WHERE user_id = ?
 `,
 
@@ -4336,7 +4336,7 @@ console.log(
 }
 
 // =====================================
-// EVENTS
+// EVENTS JOINED
 // =====================================
 
 try{
@@ -4345,9 +4345,16 @@ const [eventResult] =
 await db.promise().query(
 
 `
-SELECT COUNT(*) AS total
-FROM events
-`
+SELECT COUNT(DISTINCT event_id) AS total
+
+FROM event_responses
+
+WHERE user_id = ?
+
+AND response_status != 'NOT JOINING'
+`,
+
+[userId]
 
 );
 
@@ -4355,6 +4362,8 @@ joinedEvents =
 eventResult[0].total;
 
 }catch(error){
+
+console.log(error);
 
 console.log(
 'Events Table Missing'
@@ -4374,10 +4383,10 @@ await db.promise().query(
 `
 SELECT COUNT(*) AS total
 FROM prayer_requests
-WHERE user_id = ?
+WHERE fullname = ?
 `,
 
-[userId]
+[req.session.user.fullname]
 
 );
 
@@ -4393,7 +4402,7 @@ console.log(
 }
 
 // =====================================
-// ATTENDANCE
+// ATTENDANCE RECORDS
 // =====================================
 
 try{
